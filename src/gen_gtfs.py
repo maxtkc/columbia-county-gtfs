@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 
-from datetime import date, datetime, timedelta
-
 import holidays
 
-from gtfs_lib import (
+from src.gtfs_lib import (
     BikesAllowed,
     DirectionId,
     RouteTypes,
     ServiceAvailable,
     ServiceException,
 )
-
-now = datetime.now()
 
 
 # Agency Info
