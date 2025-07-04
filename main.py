@@ -92,7 +92,7 @@ def generate_stops():
         print("    {")
         print(f'        "stop_id": "{row["stop_id"]}",')
         print(f'        "stop_name": "{row["name"]}",')
-        print(f'        "stop_desc": "{row["name"]}",')
+        print(f'        "stop_desc": "{row["desc"]}",')
         print(f'        "stop_lat": {row["lat"]},')
         print(f'        "stop_lon": {row["lon"]},')
         print("    },")
