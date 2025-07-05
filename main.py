@@ -27,7 +27,7 @@ feed_path = Path(script_dir) / "columbia_county_gtfs"
 def generate_brouter_urls():
     stop_lookup = {s["stop_id"]: (s["stop_lon"], s["stop_lat"]) for s in STOPS}
 
-    base = "https://brouter.de/brouter-web/#map=8/43.269/-70.464/standard&lonlats="
+    base = "https://brouter.de/brouter-web/#map=11/42.4655/-73.6002/standard&lonlats="
     suffix = "&profile=car-fast"
 
     seen = set()

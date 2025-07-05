@@ -84,7 +84,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_645",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("06:45", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("06:49", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -113,7 +113,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_758",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("07:58", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("08:02", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -142,7 +142,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_908",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("09:08", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("09:10", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -171,7 +171,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1018",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("10:18", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("10:22", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -200,7 +200,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1130",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("11:30", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("11:35", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -229,7 +229,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1243",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("12:43", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("12:48", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -246,9 +246,9 @@ TRIPS = [
             ("13:30", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
             ("13:34", "STOP-d894d2df-62e3-4b4a-9ac1-808af6ab308b"),
             ("13:38", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
-            ("01:43", "STOP-6d7b292e-d97e-49c3-a39c-0d68ded2177a"),
-            ("01:48", "STOP-b9f37c98-0281-4ea0-945d-114f348f692d"),
-            ("01:53", "STOP-e471e5e5-2887-452d-ad1e-59398e71b660"),
+            ("13:43", "STOP-6d7b292e-d97e-49c3-a39c-0d68ded2177a"),
+            ("13:48", "STOP-b9f37c98-0281-4ea0-945d-114f348f692d"),
+            ("13:53", "STOP-e471e5e5-2887-452d-ad1e-59398e71b660"),
             ("13:55", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
         ],
     },
@@ -258,7 +258,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1355",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("13:55", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("13:58", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -287,7 +287,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1507",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("15:07", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("15:10", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -316,7 +316,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1619",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING",
         "stop_times": [
             ("16:19", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("16:22", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -345,7 +345,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1731",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("17:31", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("17:34", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -373,7 +373,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_1846",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("18:46", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("18:49", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -401,7 +401,7 @@ TRIPS = [
         "trip_id": "SHOPPING_WK_2001",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_WARREN_END",
         "stop_times": [
             ("20:01", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("20:04", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -416,7 +416,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_645",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("06:45", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("06:49", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -444,7 +444,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_758",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("07:58", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("08:02", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -472,7 +472,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_908",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("09:08", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("09:10", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -500,7 +500,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_1018",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("10:18", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("10:22", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -528,7 +528,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_1130",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("11:30", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("11:35", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -556,7 +556,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_1243",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("12:43", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("12:48", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -572,9 +572,9 @@ TRIPS = [
             ("13:30", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
             ("13:34", "STOP-d894d2df-62e3-4b4a-9ac1-808af6ab308b"),
             ("13:38", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
-            ("01:43", "STOP-6d7b292e-d97e-49c3-a39c-0d68ded2177a"),
-            ("01:48", "STOP-b9f37c98-0281-4ea0-945d-114f348f692d"),
-            ("01:53", "STOP-e471e5e5-2887-452d-ad1e-59398e71b660"),
+            ("13:43", "STOP-6d7b292e-d97e-49c3-a39c-0d68ded2177a"),
+            ("13:48", "STOP-b9f37c98-0281-4ea0-945d-114f348f692d"),
+            ("13:53", "STOP-e471e5e5-2887-452d-ad1e-59398e71b660"),
             ("13:55", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
         ],
     },
@@ -584,7 +584,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_1355",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("13:55", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("13:58", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -612,7 +612,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_1507",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("15:07", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("15:10", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -640,7 +640,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SAT_1616",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("16:16", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("16:19", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -665,10 +665,10 @@ TRIPS = [
     {
         "route_id": SHOPPING,
         "service_id": SATURDAY_SERVICE_ID,
-        "trip_id": "SHOPPING_SAT_1616",
+        "trip_id": "SHOPPING_SAT_1725",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("17:25", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("17:28", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -693,10 +693,10 @@ TRIPS = [
     {
         "route_id": SHOPPING,
         "service_id": SATURDAY_SERVICE_ID,
-        "trip_id": "SHOPPING_SAT_1616",
+        "trip_id": "SHOPPING_SAT_1834",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("18:34", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("18:37", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -721,10 +721,10 @@ TRIPS = [
     {
         "route_id": SHOPPING,
         "service_id": SATURDAY_SERVICE_ID,
-        "trip_id": "SHOPPING_SAT_1616",
+        "trip_id": "SHOPPING_SAT_1943",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_WARREN_END",
         "stop_times": [
             ("19:43", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("19:46", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -739,7 +739,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SUN_1100",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("11:00", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("11:03", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -767,7 +767,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SUN_1209",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("12:09", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("12:12", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -795,7 +795,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SUN_1318",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_NO_DSS",
         "stop_times": [
             ("13:18", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("13:21", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -823,7 +823,7 @@ TRIPS = [
         "trip_id": "SHOPPING_SUN_1616",
         "trip_short_name": "Shopping Shuttle",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "PORTLAND_BOS_SOUTHBOUND_LOGAN_FIRST",
+        "shape_id": "SHOPPING_APPLE_END",
         "stop_times": [
             ("14:27", "STOP-e17c74d0-75bd-4c78-b928-d78a94e172a8"),
             ("14:30", "STOP-e50320c6-1a50-4a7c-88a2-3221fd0d450e"),
@@ -843,7 +843,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_A_AM_NB",
         "trip_short_name": "Albany Empire State Plaza via State Office",
         "direction_id": DirectionId.INBOUND.value,
-        # "shape_id": "HUD_ALB_NB_STATE",
+        "shape_id": "HUD_ALB_NB",
         "stop_times": [
             ("06:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
             ("06:17", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
@@ -864,7 +864,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_C_AM_NB",
         "trip_short_name": "Albany Empire State Plaza",
         "direction_id": DirectionId.INBOUND.value,
-        # "shape_id": "HUD_ALB_NB",
+        "shape_id": "HUD_ALB_NB_NO_STATE",
         "stop_times": [
             ("07:00", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
             ("07:02", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
@@ -884,7 +884,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_B_PM_NB",
         "trip_short_name": "Albany Empire State Plaza via State Office",
         "direction_id": DirectionId.INBOUND.value,
-        # "shape_id": "HUD_ALB_NB_STATE",
+        "shape_id": "HUD_ALB_NB",
         "stop_times": [
             ("14:30", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
             ("14:32", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
@@ -905,7 +905,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_D_PM_NB",
         "trip_short_name": "Albany Empire State Plaza",
         "direction_id": DirectionId.INBOUND.value,
-        # "shape_id": "HUD_ALB_NB",
+        "shape_id": "HUD_ALB_NB_NO_STATE",
         "stop_times": [
             ("16:00", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
             ("16:02", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
@@ -925,7 +925,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_A_AM_SB",
         "trip_short_name": "Hudson - Front & Warren St.",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_ALB_SB",
+        "shape_id": "HUD_ALB_SB",
         "stop_times": [
             ("07:35", "STOP-77379ee7-3eb0-4b2a-ab67-0ea55905fb20"),
             ("07:36", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
@@ -947,7 +947,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_C_AM_SB",
         "trip_short_name": "Hudson - Front & Warren St.",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_ALB_SB",
+        "shape_id": "HUD_ALB_SB",
         "stop_times": [
             ("08:10", "STOP-77379ee7-3eb0-4b2a-ab67-0ea55905fb20"),
             ("08:12", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
@@ -969,7 +969,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_B_PM_SB",
         "trip_short_name": "Hudson - Front & Warren St.",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_ALB_SB",
+        "shape_id": "HUD_ALB_SB",
         "stop_times": [
             ("16:33", "STOP-77379ee7-3eb0-4b2a-ab67-0ea55905fb20"),
             ("16:35", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
@@ -991,7 +991,7 @@ TRIPS = [
         "trip_id": "HUD_ALB_D_PM_SB",
         "trip_short_name": "Hudson - Front & Warren St.",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_ALB_SB",
+        "shape_id": "HUD_ALB_SB",
         "stop_times": [
             ("17:10", "STOP-77379ee7-3eb0-4b2a-ab67-0ea55905fb20"),
             ("17:12", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
@@ -1010,10 +1010,10 @@ TRIPS = [
     {
         "route_id": HUD_CHT,
         "service_id": TUES_FRI_SERVICE_ID,
-        "trip_id": "TIME_1",
+        "trip_id": "HUD_CHT_1",
         "trip_short_name": "Chatham-Hudson Loop",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_CHT_TIME_1",
+        "shape_id": "HUD_CHT_1",
         "stop_times": [
             ("09:00", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
             ("09:02", "STOP-906f1a1c-6245-490f-a3a0-de4c762bf5c2"),
@@ -1036,10 +1036,10 @@ TRIPS = [
     {
         "route_id": HUD_CHT,
         "service_id": TUES_FRI_SERVICE_ID,
-        "trip_id": "TIME_2",
+        "trip_id": "HUD_CHT_2",
         "trip_short_name": "Chatham-Hudson Loop",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_CHT_TIME_2",
+        "shape_id": "HUD_CHT_2",
         "stop_times": [
             ("10:45", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
             ("10:49", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
@@ -1060,10 +1060,10 @@ TRIPS = [
     {
         "route_id": HUD_CHT,
         "service_id": TUES_FRI_SERVICE_ID,
-        "trip_id": "TIME_3",
+        "trip_id": "HUD_CHT_3",
         "trip_short_name": "Chatham-Hudson Loop",
         "direction_id": DirectionId.OUTBOUND.value,
-        # "shape_id": "HUD_CHT_TIME_3",
+        "shape_id": "HUD_CHT_3",
         "stop_times": [
             ("12:21", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
             ("12:24", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
