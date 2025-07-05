@@ -1043,7 +1043,7 @@ TRIPS = [
         "stop_times": [
             ("10:45", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
             ("10:49", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
-            ("10:48", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
+            ("10:50", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
             ("10:52", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
             ("11:13", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
             ("11:23", "STOP-3acd83d2-6783-4cfd-9e9b-b47abc21373e"),

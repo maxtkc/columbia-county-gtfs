@@ -15,3 +15,6 @@ Dutch Village Trailer Park,
 ##
 
 Generally, which busses run on holidays?
+
+Chatham Hudson Time 2 has strange timing at 45 Dardess and State Rt 66. Current
+fix is adding 2 to the SR 66 stop time
