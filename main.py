@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
 import shutil
 import tempfile
-import argparse
 import uuid
 from pathlib import Path
 
@@ -22,6 +22,43 @@ from src.gtfs_lib import linestring_from_geojson
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 feed_path = Path(script_dir) / "columbia_county_gtfs"
+
+
+def generate_brouter_urls():
+    stop_lookup = {s["stop_id"]: (s["stop_lon"], s["stop_lat"]) for s in STOPS}
+
+    base = "https://brouter.de/brouter-web/#map=8/43.269/-70.464/standard&lonlats="
+    suffix = "&profile=car-fast"
+
+    seen = set()
+
+    for trip in TRIPS:
+        stop_times = trip["stop_times"]
+        if not stop_times:
+            continue
+
+        # Sort stop_times by time
+        sorted_stop_times = sorted(stop_times, key=lambda x: x[0])
+
+        coords = []
+        for time_str, stop_id in sorted_stop_times:
+            if stop_id in stop_lookup:
+                coords.append(stop_lookup[stop_id])
+            else:
+                print(f"⚠️ Unknown stop_id: {stop_id}")
+
+        if not coords:
+            continue
+
+        lonlats = ";".join(f"{lon},{lat}" for lon, lat in coords)
+        url = f"{base}{lonlats}{suffix}"
+
+        key = (trip.get("shape_id"), url)
+        if key in seen:
+            continue
+        seen.add(key)
+
+        print(f"{trip.get('shape_id') or trip['trip_id']}: {url}")
 
 
 def generate_gtfs():
@@ -82,7 +119,11 @@ def generate_stops():
         df["stop_id"] = ""
 
     def make_id(existing_id):
-        return existing_id if pd.notna(existing_id) and existing_id.strip() else f"STOP-{uuid.uuid4()}"
+        return (
+            existing_id
+            if pd.notna(existing_id) and existing_id.strip()
+            else f"STOP-{uuid.uuid4()}"
+        )
 
     df["stop_id"] = df["stop_id"].apply(make_id)
 
@@ -106,12 +147,23 @@ def generate_stops():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--gen-gtfs", action="store_true", help="Generate GTFS zip")
-    parser.add_argument("--generate-stops", action="store_true", help="Generate stops Python code and update stops.csv")
+    parser.add_argument(
+        "--generate-stops",
+        action="store_true",
+        help="Generate stops Python code and update stops.csv",
+    )
+    parser.add_argument(
+        "--gen-brouter-urls",
+        action="store_true",
+        help="Generate BRouter URLs for trips",
+    )
     args = parser.parse_args()
 
     if args.gen_gtfs:
         generate_gtfs()
     elif args.generate_stops:
         generate_stops()
+    elif args.gen_brouter_urls:
+        generate_brouter_urls()
     else:
         parser.print_help()
