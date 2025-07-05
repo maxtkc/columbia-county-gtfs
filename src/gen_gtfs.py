@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import holidays
+from dateutil.easter import easter
 
 from src.gtfs_lib import DirectionId, RouteTypes, ServiceAvailable, ServiceException
 
@@ -42,8 +43,8 @@ FEED_INFO = {
     "feed_contact_url": AGENCY["agency_url"],
     "feed_lang": "en-US",
     "feed_version": 1,
-    "feed_start_date": 20250704,
-    "feed_end_date": 20290704,
+    "feed_start_date": 20250102,
+    "feed_end_date": 20291231,
 }
 
 ROUTES = [
@@ -1380,8 +1381,8 @@ CALENDAR = [
         "friday": ServiceAvailable.YES.value,
         "saturday": ServiceAvailable.YES.value,
         "sunday": ServiceAvailable.YES.value,
-        "start_date": 20250704,
-        "end_date": 20290704,
+        "start_date": 20250102,
+        "end_date": 20291231,
     },
     {
         "service_id": MONDAY_SERVICE_ID,
@@ -1392,8 +1393,8 @@ CALENDAR = [
         "friday": ServiceAvailable.NO.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250704,
-        "end_date": 20290704,
+        "start_date": 20250102,
+        "end_date": 20291231,
     },
     {
         "service_id": TUES_FRI_SERVICE_ID,
@@ -1404,8 +1405,8 @@ CALENDAR = [
         "friday": ServiceAvailable.NO.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250704,
-        "end_date": 20290704,
+        "start_date": 20250102,
+        "end_date": 20291231,
     },
     {
         "service_id": WEEKDAY_SERVICE_ID,
@@ -1416,19 +1417,20 @@ CALENDAR = [
         "friday": ServiceAvailable.YES.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250704,
-        "end_date": 20290704,
+        "start_date": 20250102,
+        "end_date": 20291231,
     },
 ]
 
 
+years = range(2025, 2030)
 CALENDAR_DATES = [
     {
         "service_id": service_id,
-        "date": int(d.strftime("%Y%m%d")),  # e.g. 20250704
+        "date": int(d.strftime("%Y%m%d")),  # e.g. 20250102
         "exception_type": ServiceException.REMOVED.value,
     }
-    for d in sorted(holidays.US(years=range(2025, 2030)).keys())
+    for d in sorted(list(holidays.US(years=years).keys()) + list(map(easter, years)))
     for service_id in [
         DAILY_SERVICE_ID,
         MONDAY_SERVICE_ID,
