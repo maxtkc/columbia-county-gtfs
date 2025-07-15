@@ -7,7 +7,7 @@ from src.gtfs_lib import DirectionId, RouteTypes, ServiceAvailable, ServiceExcep
 
 # Agency Info
 AGENCY_ID = "CC"
-AGENCY_EMAIL = "tbd"
+AGENCY_EMAIL = "transportation@columbiacountyny.com"
 
 # Route IDs
 SHOPPING = "SHOPPING"
