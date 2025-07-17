@@ -75,12 +75,12 @@ def generate_gtfs():
                 [
                     {
                         "trip_id": trip["trip_id"],
-                        "arrival_time": f"{time}:00",
-                        "departure_time": f"{time}:00",
-                        "stop_id": stop_id,
+                        "arrival_time": f"{stop[0]}:00",
+                        "departure_time": f"{stop[2] if len(stop) == 3 else stop[0]}:00",
+                        "stop_id": stop[1],
                         "stop_sequence": i,
                     }
-                    for i, (time, stop_id) in enumerate(trip["stop_times"])
+                    for i, stop in enumerate(trip["stop_times"])
                 ]
                 for trip in TRIPS
             ]
