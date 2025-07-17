@@ -1,82 +1,121 @@
 #!/usr/bin/env python3
+"""
+Columbia County GTFS Data Definitions
+
+This module contains all transit data for Columbia County Public Transportation
+including routes, stops, trips, schedules, and service patterns. Data is 
+structured as Python constants that are processed by main.py to generate
+standard GTFS feed files.
+
+Key data structures:
+- AGENCY: Transit agency information
+- ROUTES: Route definitions (SHOPPING, HUD_ALB, HUD_CHT, MOND)
+- STOPS: Stop locations with coordinates
+- TRIPS: Trip definitions with stop_times schedules
+- CALENDAR/CALENDAR_DATES: Service patterns and exceptions
+"""
 
 import holidays
 from dateutil.easter import easter
 
 from src.gtfs_lib import DirectionId, RouteTypes, ServiceAvailable, ServiceException
 
-# Agency Info
-AGENCY_ID = "CC"
+# =============================================================================
+# CONSTANTS AND IDENTIFIERS
+# =============================================================================
+
+# Agency information constants
+AGENCY_ID = "CC"  # Columbia County agency identifier
 AGENCY_EMAIL = "transportation@columbiacountyny.com"
 
-# Route IDs
-SHOPPING = "SHOPPING"
-HUD_ALB = "HUD_ALB"
-HUD_CHT = "HUD_CHT"
-MOND = "MOND"
+# Route identifiers for Columbia County transit system
+SHOPPING = "SHOPPING"  # Shopping loop route
+HUD_ALB = "HUD_ALB"    # Hudson to Albany route
+HUD_CHT = "HUD_CHT"    # Hudson to Chatham route
+MOND = "MOND"          # Monday-only service routes
 
-# Service IDs
-DAILY_SERVICE_ID = "DAILY"
-MONDAY_SERVICE_ID = "MONDAY"
-TUES_FRI_SERVICE_ID = "TUES_FRI"
-WEEKDAY_SERVICE_ID = "WEEKDAY"
-SATURDAY_SERVICE_ID = "SATURDAY"
-SUNDAY_SERVICE_ID = "SUNDAY"
+# Service pattern identifiers for different operating schedules
+DAILY_SERVICE_ID = "DAILY"        # Every day service
+MONDAY_SERVICE_ID = "MONDAY"      # Monday-only service
+TUES_FRI_SERVICE_ID = "TUES_FRI"  # Tuesday and Friday service
+WEEKDAY_SERVICE_ID = "WEEKDAY"    # Monday through Friday service
+SATURDAY_SERVICE_ID = "SATURDAY"  # Saturday-only service
+SUNDAY_SERVICE_ID = "SUNDAY"      # Sunday-only service
+
+# =============================================================================
+# AGENCY INFORMATION
+# =============================================================================
 
 AGENCY = {
-    # Agency Id
-    "agency_id": AGENCY_ID,
-    # Agency Name
-    "agency_name": "Columbia County Public Transportation",
-    # Agency URL
-    "agency_url": "https://publictransportation.columbiacountyny.com",
-    # Agency Timezone
-    "agency_timezone": "America/New_York",
-    "agency_phone": "518-672-4901",
-    "agency_email": AGENCY_EMAIL,
+    "agency_id": AGENCY_ID,  # Unique identifier for the transit agency
+    "agency_name": "Columbia County Public Transportation",  # Full agency name
+    "agency_url": "https://publictransportation.columbiacountyny.com",  # Official website
+    "agency_timezone": "America/New_York",  # Timezone for all schedule times
+    "agency_phone": "518-672-4901",  # Contact phone number
+    "agency_email": AGENCY_EMAIL,  # Contact email address
 }
 
+# =============================================================================
+# FEED METADATA
+# =============================================================================
+
 FEED_INFO = {
-    "feed_publisher_name": AGENCY["agency_name"],
-    "feed_publisher_url": AGENCY["agency_url"],
-    "feed_contact_email": AGENCY_EMAIL,
-    "feed_contact_url": AGENCY["agency_url"],
-    "feed_lang": "en-US",
-    "feed_version": 1,
-    "feed_start_date": 20250102,
-    "feed_end_date": 20291231,
+    "feed_publisher_name": AGENCY["agency_name"],  # Publisher name from agency info
+    "feed_publisher_url": AGENCY["agency_url"],    # Publisher website
+    "feed_contact_email": AGENCY_EMAIL,            # Contact email for feed issues
+    "feed_contact_url": AGENCY["agency_url"],      # Contact website
+    "feed_lang": "en-US",                          # Primary language of feed
+    "feed_version": 1,                             # Version number of this feed
+    "feed_start_date": 20250102,                   # First date of service (YYYYMMDD)
+    "feed_end_date": 20291231,                     # Last date of service (YYYYMMDD)
 }
+
+# =============================================================================
+# ROUTE DEFINITIONS
+# =============================================================================
 
 ROUTES = [
     {
-        "route_id": SHOPPING,
+        "route_id": SHOPPING,  # Shopping loop route identifier
         "agency_id": AGENCY_ID,
         "route_long_name": "Hudson-Greenport Shopping Shuttle",
         "route_desc": "Daily service looping through many shopping locations between Hudson and Greenport",
-        "route_type": RouteTypes.BUS.value,
+        "route_type": RouteTypes.BUS.value,  # GTFS route type: bus service
     },
     {
-        "route_id": HUD_ALB,
+        "route_id": HUD_ALB,  # Hudson-Albany commuter route
         "agency_id": AGENCY_ID,
         "route_long_name": "Hudson-Albany Commuter Shuttle",
         "route_desc": "Weekday shuttle service between Hudson and Albany",
         "route_type": RouteTypes.BUS.value,
     },
     {
-        "route_id": HUD_CHT,
+        "route_id": HUD_CHT,  # Hudson-Chatham route
         "agency_id": AGENCY_ID,
         "route_long_name": "Chatham-Hudson Bus Route",
         "route_desc": "Tuesday and Friday free service between Chatham and Hudson",
         "route_type": RouteTypes.BUS.value,
     },
     {
-        "route_id": MOND,
+        "route_id": MOND,  # Monday-only county service
         "agency_id": AGENCY_ID,
         "route_long_name": "Monday County Bus",
         "route_desc": "Monday morning bus service through various shopping locations in the county",
         "route_type": RouteTypes.BUS.value,
     },
 ]
+
+# =============================================================================
+# TRIP DEFINITIONS AND SCHEDULES
+# =============================================================================
+# 
+# Each trip contains:
+# - route_id: Which route this trip operates on
+# - service_id: Which service calendar pattern applies
+# - trip_id: Unique identifier for this specific trip
+# - direction_id: Direction of travel (0=outbound, 1=inbound)
+# - shape_id: Reference to GeoJSON file for route geometry (optional)
+# - stop_times: Array of (time, stop_id) or (arrival, stop_id, departure) tuples
 
 TRIPS = [
     {
@@ -1423,14 +1462,21 @@ CALENDAR = [
 ]
 
 
-years = range(2025, 2030)
+# =============================================================================
+# CALENDAR EXCEPTIONS - Holiday Service Removals
+# =============================================================================
+
+# Generate service exceptions for US federal holidays and Easter
+years = range(2025, 2030)  # Years covered by this GTFS feed
 CALENDAR_DATES = [
     {
-        "service_id": service_id,
-        "date": int(d.strftime("%Y%m%d")),  # e.g. 20250102
-        "exception_type": ServiceException.REMOVED.value,
+        "service_id": service_id,  # Apply exception to this service pattern
+        "date": int(d.strftime("%Y%m%d")),  # Holiday date in YYYYMMDD format
+        "exception_type": ServiceException.REMOVED.value,  # Remove service on this date
     }
+    # Get all US federal holidays plus Easter for the specified years
     for d in sorted(list(holidays.US(years=years).keys()) + list(map(easter, years)))
+    # Apply holiday exceptions to all service patterns
     for service_id in [
         DAILY_SERVICE_ID,
         MONDAY_SERVICE_ID,
