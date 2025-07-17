@@ -106,9 +106,9 @@ The generated feed includes all standard GTFS files:
 ## Contributing
 
 When modifying transit data:
-1. Update stop definitions in `stops.csv` and run `main.py --generate-stops`
+1. Update stop definitions in `stops.csv` and run `python main.py --generate-stops`
 2. Update route/stop definitions in `src/gen_gtfs.py`
-3. Add/update GeoJSON shape files in `shapes/` directory using `main.py --gen-brouter-urls` as needed
+3. Add/update GeoJSON shape files in `shapes/` directory using `python main.py --gen-brouter-urls` as needed
 4. Run `python main.py --gen-gtfs` to regenerate the feed
 5. Test the generated GTFS feed with [validators](https://gtfs-validator.mobilitydata.org/)
 
