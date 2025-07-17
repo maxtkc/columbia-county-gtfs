@@ -197,17 +197,6 @@ def generate_stops():
     # Apply ID generation to all stops
     df["stop_id"] = df["stop_id"].apply(make_id)
 
-    # Output Python code for STOPS data structure
-    print("STOPS = [")
-    for _, row in df.iterrows():
-        print("    {")
-        print(f'        "stop_id": "{row["stop_id"]}",')
-        print(f'        "stop_name": "{row["name"]}",')
-        print(f'        "stop_lat": {row["lat"]},')
-        print(f'        "stop_lon": {row["lon"]},')
-        print("    },")
-    print("]")
-
     # Save updated CSV with generated stop_ids
     df.to_csv(stops_csv, index=False)
     print(f"✅ Updated {stops_csv} with stop_ids")
@@ -220,7 +209,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--gen-gtfs", action="store_true", help="Generate GTFS zip")
     parser.add_argument(
-        "--generate-stops",
+        "--gen-stops",
         action="store_true",
         help="Generate stops Python code and update stops.csv",
     )
@@ -234,7 +223,7 @@ if __name__ == "__main__":
     # Execute the requested command
     if args.gen_gtfs:
         generate_gtfs()
-    elif args.generate_stops:
+    elif args.gen_stops:
         generate_stops()
     elif args.gen_brouter_urls:
         generate_brouter_urls()

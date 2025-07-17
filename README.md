@@ -31,15 +31,12 @@ python main.py --gen-gtfs
 This generates `columbia_county_gtfs.zip` containing all required GTFS files.
 
 ### Manage Stops
-Generate stop definitions from the CSV file and update stop IDs:
-```bash
-python main.py --generate-stops
-```
-This reads `stops.csv` and outputs Python code for the STOPS data structure.
 
-> This should be used for adding and modifying stops, as it generates the
-> UUID's for stops as needed. Just add the stop with no uuid and it will
-> generate it when this is run.
+New stops can be added by adding them to the `stops.txt` file. Leave the uuid
+blank and generate it with
+```bash
+python main.py --gen-stops
+```
 
 ### Generate Route Planning URLs
 Create BRouter URLs for making geojson routes.
@@ -106,7 +103,7 @@ The generated feed includes all standard GTFS files:
 ## Contributing
 
 When modifying transit data:
-1. Update stop definitions in `stops.csv` and run `python main.py --generate-stops`
+1. Update stop definitions in `stops.csv` and run `python main.py --gen-stops`
 2. Update route/stop definitions in `src/gen_gtfs.py`
 3. Add/update GeoJSON shape files in `shapes/` directory using `python main.py --gen-brouter-urls` as needed
 4. Run `python main.py --gen-gtfs` to regenerate the feed
@@ -117,7 +114,3 @@ When modifying transit data:
 For questions about the transit system, contact Columbia County Public Transportation:
 - Phone: 518-672-4901
 - Website: [https://publictransportation.columbiacountyny.com](https://publictransportation.columbiacountyny.com)
-
-## TODOs
-
-- Remove reliance on stops.csv... There's probably a better way to do that
