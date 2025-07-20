@@ -76,6 +76,9 @@ Stop information is managed through:
 - `stops.csv`: Master list with coordinates and names
 - `STOPS` constant in `gen_gtfs.py`: Python data structure for GTFS generation
 
+#### Create Route Map
+You can use https://brouter.de as an intermediary tool to create map of each of the routes. BRouter produces a unique URL for each route, and each route version. 
+
 ### Trips and Schedules
 Trip definitions include:
 - Stop sequences with arrival/departure times
