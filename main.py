@@ -27,13 +27,14 @@ from src.gen_gtfs import (
     TRIPS,
 )
 from src.gtfs_lib import linestring_from_geojson
+from src.brouter import generate_brouter_urls, update_stop_positions_from_url
 
 # Script directory and output paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
 feed_path = Path(script_dir) / "columbia_county_gtfs"
 
 
-def generate_brouter_urls():
+def generate_brouter_urls_cli():
     """
     Generate BRouter URLs for route planning and visualization.
     
@@ -46,48 +47,8 @@ def generate_brouter_urls():
     - Plan new routes interactively
     - Export route geometries as GeoJSON files
     """
-    # Create lookup dictionary mapping stop IDs to (longitude, latitude) coordinates
-    stop_lookup = {s["stop_id"]: (s["stop_lon"], s["stop_lat"]) for s in STOPS}
-
-    # BRouter web interface URL components
-    base = "https://brouter.de/brouter-web/#map=11/42.4655/-73.6002/standard&lonlats="
-    suffix = "&profile=car-fast"
-
-    # Track seen URLs to avoid duplicates for trips with same shape
-    seen = set()
-
-    # Process each trip to generate route URLs
-    for trip in TRIPS:
-        stop_times = trip["stop_times"]
-        if not stop_times:
-            continue
-
-        # Sort stop_times by arrival time to ensure proper sequence
-        sorted_stop_times = sorted(stop_times, key=lambda x: x[0])
-
-        # Build coordinate list from stop sequence
-        coords = []
-        for time_str, stop_id in sorted_stop_times:
-            if stop_id in stop_lookup:
-                coords.append(stop_lookup[stop_id])
-            else:
-                print(f"⚠️ Unknown stop_id: {stop_id}")
-
-        if not coords:
-            continue
-
-        # Format coordinates for BRouter URL (longitude,latitude pairs separated by semicolons)
-        lonlats = ";".join(f"{lon},{lat}" for lon, lat in coords)
-        url = f"{base}{lonlats}{suffix}"
-
-        # Use shape_id and URL as key to avoid duplicate URLs for same route shape
-        key = (trip.get("shape_id"), url)
-        if key in seen:
-            continue
-        seen.add(key)
-
-        # Output the route identifier and corresponding BRouter URL
-        print(f"{trip.get('shape_id') or trip['trip_id']}: {url}")
+    for route_id, url in generate_brouter_urls(TRIPS, STOPS):
+        print(f"{route_id}: {url}")
 
 
 def generate_gtfs():
@@ -202,6 +163,56 @@ def generate_stops():
     print(f"✅ Updated {stops_csv} with stop_ids")
 
 
+def update_stop_positions(brouter_url, trip_id):
+    """
+    Update stop positions from a modified BRouter URL.
+    
+    Args:
+        brouter_url: Modified BRouter URL with new coordinates
+        trip_id: ID of the trip to compare against
+    """
+    stops_csv_path = Path(script_dir) / "stops.csv"
+    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path)
+    
+    if "error" in result:
+        print(f"❌ Error: {result['error']}")
+        if "url_coords" in result and "trip_stops" in result:
+            print(f"   BRouter URL has {result['url_coords']} coordinates")
+            print(f"   Trip '{trip_id}' has {result['trip_stops']} stops")
+        return
+    
+    print(f"📍 Updating stop positions for trip '{result['trip_id']}':")
+    print(f"   Found {result['total_stops']} coordinates in BRouter URL")
+    print()
+    
+    for update in result['updates']:
+        if "error" in update:
+            print(f"⚠️  {update['stop_id']}: {update['error']}")
+            continue
+        
+        stop_id = update['stop_id']
+        stop_name = update['stop_name']
+        distance_m = update['distance_m']
+        old_lon, old_lat = update['old_coords']
+        new_lon, new_lat = update['new_coords']
+        
+        if update['moved']:
+            print(f"📌 {stop_name} ({stop_id}): Updated position (moved {distance_m:.1f}m)")
+            print(f"   Old: ({old_lon:.6f}, {old_lat:.6f})")
+            print(f"   New: ({new_lon:.6f}, {new_lat:.6f})")
+        else:
+            print(f"✅ {stop_name} ({stop_id}): No significant change ({distance_m:.1f}m)")
+    
+    print()
+    if result['stops_moved'] > 0:
+        print(f"📊 Summary: {result['stops_moved']}/{result['total_stops']} stops updated")
+        print(f"   Average distance: {result['avg_distance_m']:.1f}m")
+        print(f"   Total distance: {result['total_distance_m']:.1f}m")
+        print(f"✅ Updated {stops_csv_path}")
+    else:
+        print("✅ No stops were significantly moved")
+
+
 if __name__ == "__main__":
     # Set up command-line argument parser
     parser = argparse.ArgumentParser(
@@ -218,6 +229,21 @@ if __name__ == "__main__":
         action="store_true",
         help="Generate BRouter URLs for trips",
     )
+    parser.add_argument(
+        "--update-stop-positions",
+        action="store_true",
+        help="Update stop positions from modified BRouter URL",
+    )
+    parser.add_argument(
+        "--brouter-url",
+        type=str,
+        help="Modified BRouter URL with new coordinates",
+    )
+    parser.add_argument(
+        "--trip-id",
+        type=str,
+        help="Trip ID to compare against",
+    )
     args = parser.parse_args()
 
     # Execute the requested command
@@ -226,7 +252,13 @@ if __name__ == "__main__":
     elif args.gen_stops:
         generate_stops()
     elif args.gen_brouter_urls:
-        generate_brouter_urls()
+        generate_brouter_urls_cli()
+    elif args.update_stop_positions:
+        if not args.brouter_url or not args.trip_id:
+            print("❌ Error: --brouter-url and --trip-id are required with --update-stop-positions")
+            parser.print_help()
+        else:
+            update_stop_positions(args.brouter_url, args.trip_id)
     else:
         # No command specified, show help
         parser.print_help()

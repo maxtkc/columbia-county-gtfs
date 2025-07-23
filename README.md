@@ -47,13 +47,27 @@ python main.py --gen-brouter-urls
 Make sure to name the geojson file the same as the `shape_id` and place it in
 the `shapes` directory so it can be used.
 
+### Update Stop Positions
+Update stop coordinates from a modified BRouter URL:
+```bash
+python main.py --update-stop-positions --brouter-url "<modified_brouter_url>" --trip-id "<trip_id>"
+```
+
+This command:
+- Extracts coordinates from a modified BRouter URL
+- Maps them back to original stops by sequence order
+- Updates the coordinates in `stops.csv`
+- Reports which stops moved and by how much distance
+- Validates that the number of coordinates matches the trip's stops
+
 ## Project Structure
 
 ```
 ├── main.py                 # CLI entry point
 ├── src/
 │   ├── gen_gtfs.py        # Transit data definitions (routes, stops, trips)
-│   └── gtfs_lib.py        # Utility functions and GTFS enums
+│   ├── gtfs_lib.py        # Utility functions and GTFS enums
+│   └── brouter.py         # BRouter URL utilities
 ├── shapes/                # GeoJSON files for route geometries
 │   ├── HUD_ALB_NB.geojson
 │   ├── HUD_ALB_SB.geojson
