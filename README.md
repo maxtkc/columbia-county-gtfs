@@ -59,6 +59,34 @@ This command:
 - Updates the coordinates in `stops.csv`
 - Reports which stops moved and by how much distance
 - Validates that the number of coordinates matches the trip's stops
+- Automatically extracts and saves nogos (no-go areas) to `nogos.csv`
+
+**Note:** The `trip_id` can be any trip that has the same `shape_id` as the route you're modifying.
+
+### Route Modification Workflow
+
+To modify a route without adding new stops:
+
+1. **Generate BRouter URL for the route:**
+   ```bash
+   python main.py --gen-brouter-urls
+   ```
+   Copy the URL for the route you want to modify.
+
+2. **Modify the route in BRouter:**
+   - Open the URL in [BRouter web interface](https://brouter.de/brouter-web/)
+   - Drag stops to adjust the route
+   - Add nogos (no-go areas) using the no-go tool in BRouter to mark areas to avoid
+   - Copy the modified URL from the browser
+
+3. **Update stop positions and save nogos:**
+   ```bash
+   python main.py --update-stop-positions --brouter-url "<modified_url>" --trip-id "<trip_id>"
+   ```
+   This will:
+   - Update stop coordinates based on the new route
+   - Automatically save any nogos from the URL to `nogos.csv`
+   - Generate future BRouter URLs with the saved nogos included
 
 ## Project Structure
 
@@ -74,6 +102,7 @@ This command:
 │   ├── SHOPPING.geojson
 │   └── ...
 ├── stops.csv             # Stop information (name, lat, lon)
+├── nogos.csv             # No-go areas for route planning (shape_id, lat, lon, radius)
 └── columbia_county_gtfs.zip  # Generated GTFS feed
 ```
 
