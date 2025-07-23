@@ -34,6 +34,40 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 feed_path = Path(script_dir) / "columbia_county_gtfs"
 
 
+def load_nogos_from_csv():
+    """
+    Load nogos from nogos.csv and convert to dictionary format expected by brouter functions.
+    
+    Returns:
+        Dict mapping shape_id to list of (lon, lat, radius) tuples
+    """
+    nogos_csv_path = Path(script_dir) / "nogos.csv"
+    
+    # Return empty dict if file doesn't exist or is empty
+    if not nogos_csv_path.exists():
+        return {}
+    
+    try:
+        df = pd.read_csv(nogos_csv_path)
+        
+        # Return empty dict if CSV is empty or missing required columns
+        if df.empty or not all(col in df.columns for col in ['shape_id', 'stop_lat', 'stop_lon', 'radius']):
+            return {}
+        
+        nogos_dict = {}
+        for _, row in df.iterrows():
+            shape_id = row["shape_id"]
+            if shape_id not in nogos_dict:
+                nogos_dict[shape_id] = []
+            nogos_dict[shape_id].append((row["stop_lon"], row["stop_lat"], int(row["radius"])))
+        
+        return nogos_dict
+        
+    except Exception as e:
+        print(f"⚠️ Warning: Could not load nogos.csv: {e}")
+        return {}
+
+
 def generate_brouter_urls_cli():
     """
     Generate BRouter URLs for route planning and visualization.
@@ -47,7 +81,8 @@ def generate_brouter_urls_cli():
     - Plan new routes interactively
     - Export route geometries as GeoJSON files
     """
-    for route_id, url in generate_brouter_urls(TRIPS, STOPS):
+    nogos_dict = load_nogos_from_csv()
+    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict):
         print(f"{route_id}: {url}")
 
 
@@ -172,7 +207,9 @@ def update_stop_positions(brouter_url, trip_id):
         trip_id: ID of the trip to compare against
     """
     stops_csv_path = Path(script_dir) / "stops.csv"
-    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path)
+    nogos_csv_path = Path(script_dir) / "nogos.csv"
+    nogos_dict = load_nogos_from_csv()
+    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, nogos_dict)
     
     if "error" in result:
         print(f"❌ Error: {result['error']}")
@@ -211,6 +248,24 @@ def update_stop_positions(brouter_url, trip_id):
         print(f"✅ Updated {stops_csv_path}")
     else:
         print("✅ No stops were significantly moved")
+    
+    # Handle nogos information
+    nogos_info = result.get('nogos_info', {})
+    if nogos_info.get('nogos_csv_created'):
+        print(f"📄 Created {nogos_csv_path}")
+    
+    if nogos_info.get('nogos_updated'):
+        shape_id = nogos_info['shape_id']
+        nogos_count = nogos_info['nogos_count']
+        print(f"🚫 Updated {nogos_count} nogos for shape '{shape_id}':")
+        for i, (lon, lat, radius) in enumerate(nogos_info['nogos'], 1):
+            print(f"   {i}. {lat:.6f}, {lon:.6f} (radius: {radius}m)")
+        print(f"✅ Updated {nogos_csv_path}")
+    elif nogos_info.get('nogos_error'):
+        print(f"⚠️  Nogos warning: {nogos_info['nogos_error']}")
+    elif 'nogos_info' in result:
+        print("ℹ️  No nogos found in BRouter URL")
+
 
 
 if __name__ == "__main__":
