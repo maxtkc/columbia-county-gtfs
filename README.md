@@ -32,7 +32,7 @@ This generates `columbia_county_gtfs.zip` containing all required GTFS files.
 
 ### Manage Stops
 
-New stops can be added by adding them to the `stops.txt` file. Leave the uuid
+New stops can be added by adding them to the `stops.csv` file. Leave the uuid
 blank and generate it with
 ```bash
 python main.py --gen-stops
