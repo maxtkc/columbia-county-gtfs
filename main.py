@@ -269,51 +269,47 @@ def update_stop_positions(brouter_url, trip_id):
 
 
 if __name__ == "__main__":
-    # Set up command-line argument parser
+    # Set up command-line argument parser with subcommands
     parser = argparse.ArgumentParser(
         description="Columbia County GTFS Feed Generator - Generate transit data feeds and route planning tools"
     )
-    parser.add_argument("--gen-gtfs", action="store_true", help="Generate GTFS zip")
-    parser.add_argument(
-        "--gen-stops",
-        action="store_true",
-        help="Generate stops Python code and update stops.csv",
-    )
-    parser.add_argument(
-        "--gen-brouter-urls",
-        action="store_true",
-        help="Generate BRouter URLs for trips",
-    )
-    parser.add_argument(
-        "--update-stop-positions",
-        action="store_true",
-        help="Update stop positions from modified BRouter URL",
-    )
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    # Generate GTFS zip file
+    gtfs_parser = subparsers.add_parser("gen-gtfs", help="Generate GTFS zip")
+
+    # Generate stops Python code and update stops.csv
+    stops_parser = subparsers.add_parser("gen-stops", help="Generate stops Python code and update stops.csv")
+
+    # Generate BRouter URLs for trips
+    brouter_parser = subparsers.add_parser("gen-brouter-urls", help="Generate BRouter URLs for trips")
+
+    # Update stop positions from modified BRouter URL
+    update_parser = subparsers.add_parser("update-stop-positions", help="Update stop positions from modified BRouter URL")
+    update_parser.add_argument(
         "--brouter-url",
         type=str,
+        required=True,
         help="Modified BRouter URL with new coordinates",
     )
-    parser.add_argument(
+    update_parser.add_argument(
         "--trip-id",
         type=str,
+        required=True,
         help="Trip ID to compare against",
     )
+
     args = parser.parse_args()
 
     # Execute the requested command
-    if args.gen_gtfs:
+    if args.command == "gen-gtfs":
         generate_gtfs()
-    elif args.gen_stops:
+    elif args.command == "gen-stops":
         generate_stops()
-    elif args.gen_brouter_urls:
+    elif args.command == "gen-brouter-urls":
         generate_brouter_urls_cli()
-    elif args.update_stop_positions:
-        if not args.brouter_url or not args.trip_id:
-            print("❌ Error: --brouter-url and --trip-id are required with --update-stop-positions")
-            parser.print_help()
-        else:
-            update_stop_positions(args.brouter_url, args.trip_id)
+    elif args.command == "update-stop-positions":
+        update_stop_positions(args.brouter_url, args.trip_id)
     else:
         # No command specified, show help
         parser.print_help()
