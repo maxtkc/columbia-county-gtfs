@@ -3,7 +3,7 @@
 Columbia County GTFS Data Definitions
 
 This module contains all transit data for Columbia County Public Transportation
-including routes, stops, trips, schedules, and service patterns. Data is 
+including routes, stops, trips, schedules, and service patterns. Data is
 structured as Python constants that are processed by main.py to generate
 standard GTFS feed files.
 
@@ -32,17 +32,17 @@ AGENCY_EMAIL = "transportation@columbiacountyny.com"
 
 # Route identifiers for Columbia County transit system
 SHOPPING = "SHOPPING"  # Shopping loop route
-HUD_ALB = "HUD_ALB"    # Hudson to Albany route
-HUD_CHT = "HUD_CHT"    # Hudson to Chatham route
-MOND = "MOND"          # Monday-only service routes
+HUD_ALB = "HUD_ALB"  # Hudson to Albany route
+HUD_CHT = "HUD_CHT"  # Hudson to Chatham route
+MOND = "MOND"  # Monday-only service routes
 
 # Service pattern identifiers for different operating schedules
-DAILY_SERVICE_ID = "DAILY"        # Every day service
-MONDAY_SERVICE_ID = "MONDAY"      # Monday-only service
+DAILY_SERVICE_ID = "DAILY"  # Every day service
+MONDAY_SERVICE_ID = "MONDAY"  # Monday-only service
 TUES_FRI_SERVICE_ID = "TUES_FRI"  # Tuesday and Friday service
-WEEKDAY_SERVICE_ID = "WEEKDAY"    # Monday through Friday service
+WEEKDAY_SERVICE_ID = "WEEKDAY"  # Monday through Friday service
 SATURDAY_SERVICE_ID = "SATURDAY"  # Saturday-only service
-SUNDAY_SERVICE_ID = "SUNDAY"      # Sunday-only service
+SUNDAY_SERVICE_ID = "SUNDAY"  # Sunday-only service
 
 # =============================================================================
 # AGENCY INFORMATION
@@ -63,13 +63,13 @@ AGENCY = {
 
 FEED_INFO = {
     "feed_publisher_name": AGENCY["agency_name"],  # Publisher name from agency info
-    "feed_publisher_url": AGENCY["agency_url"],    # Publisher website
-    "feed_contact_email": AGENCY_EMAIL,            # Contact email for feed issues
-    "feed_contact_url": AGENCY["agency_url"],      # Contact website
-    "feed_lang": "en-US",                          # Primary language of feed
-    "feed_version": 1,                             # Version number of this feed
-    "feed_start_date": 20250102,                   # First date of service (YYYYMMDD)
-    "feed_end_date": 20291231,                     # Last date of service (YYYYMMDD)
+    "feed_publisher_url": AGENCY["agency_url"],  # Publisher website
+    "feed_contact_email": AGENCY_EMAIL,  # Contact email for feed issues
+    "feed_contact_url": AGENCY["agency_url"],  # Contact website
+    "feed_lang": "en-US",  # Primary language of feed
+    "feed_version": 1,  # Version number of this feed
+    "feed_start_date": 20250102,  # First date of service (YYYYMMDD)
+    "feed_end_date": 20291231,  # Last date of service (YYYYMMDD)
 }
 
 # =============================================================================
@@ -110,7 +110,7 @@ ROUTES = [
 # =============================================================================
 # TRIP DEFINITIONS AND SCHEDULES
 # =============================================================================
-# 
+#
 # Each trip contains:
 # - route_id: Which route this trip operates on
 # - service_id: Which service calendar pattern applies
@@ -973,13 +973,13 @@ TRIPS = [
             ("07:36", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
             ("07:38", "STOP-922b49f6-bb0d-47de-868c-183f19d26459"),
             ("07:55", "STOP-97cb7d7f-7f85-41e1-9fd3-308e23da2d92"),
-            ("08:00", "STOP-ad8f5dff-5acc-4af6-b1dd-7d567ed433ab"),
+            ("08:00", "STOP-9b2779a3-6fd5-492c-8304-cb4a5f3ffd7f"),
             ("08:05", "STOP-d777c53f-8e8b-4c0f-9cf2-9b841f4a2e6b"),
             ("08:15", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
             ("08:20", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("08:25", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
-            ("08:31", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
-            ("08:33", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
+            ("08:31", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
+            ("08:33", "STOP-d15d9800-367d-4195-a211-322880120d20"),
             ("08:35", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
         ],
     },
@@ -995,13 +995,13 @@ TRIPS = [
             ("08:12", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
             ("08:14", "STOP-922b49f6-bb0d-47de-868c-183f19d26459"),
             ("08:35", "STOP-97cb7d7f-7f85-41e1-9fd3-308e23da2d92"),
-            ("08:40", "STOP-ad8f5dff-5acc-4af6-b1dd-7d567ed433ab"),
+            ("08:40", "STOP-9b2779a3-6fd5-492c-8304-cb4a5f3ffd7f"),
             ("08:45", "STOP-d777c53f-8e8b-4c0f-9cf2-9b841f4a2e6b"),
             ("08:55", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
             ("09:00", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("09:05", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
-            ("09:11", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
-            ("09:13", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
+            ("09:11", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
+            ("09:13", "STOP-d15d9800-367d-4195-a211-322880120d20"),
             ("09:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
         ],
     },
@@ -1017,13 +1017,13 @@ TRIPS = [
             ("16:35", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
             ("16:37", "STOP-922b49f6-bb0d-47de-868c-183f19d26459"),
             ("16:55", "STOP-97cb7d7f-7f85-41e1-9fd3-308e23da2d92"),
-            ("17:00", "STOP-ad8f5dff-5acc-4af6-b1dd-7d567ed433ab"),
+            ("17:00", "STOP-9b2779a3-6fd5-492c-8304-cb4a5f3ffd7f"),
             ("17:07", "STOP-d777c53f-8e8b-4c0f-9cf2-9b841f4a2e6b"),
             ("17:15", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
             ("17:18", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("17:22", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
-            ("17:27", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
-            ("17:30", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
+            ("17:27", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
+            ("17:30", "STOP-d15d9800-367d-4195-a211-322880120d20"),
             ("17:32", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
         ],
     },
@@ -1039,13 +1039,13 @@ TRIPS = [
             ("17:12", "STOP-534c109d-b43c-4c1d-8d6c-aec6be75f106"),
             ("17:14", "STOP-922b49f6-bb0d-47de-868c-183f19d26459"),
             ("17:35", "STOP-97cb7d7f-7f85-41e1-9fd3-308e23da2d92"),
-            ("17:40", "STOP-ad8f5dff-5acc-4af6-b1dd-7d567ed433ab"),
+            ("17:40", "STOP-9b2779a3-6fd5-492c-8304-cb4a5f3ffd7f"),
             ("17:45", "STOP-d777c53f-8e8b-4c0f-9cf2-9b841f4a2e6b"),
             ("17:55", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
             ("18:00", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("18:05", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
-            ("18:11", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
-            ("18:13", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
+            ("18:11", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
+            ("18:13", "STOP-d15d9800-367d-4195-a211-322880120d20"),
             ("18:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
         ],
     },

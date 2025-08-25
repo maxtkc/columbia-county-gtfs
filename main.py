@@ -68,6 +68,41 @@ def load_nogos_from_csv():
         return {}
 
 
+def load_guides_from_csv():
+    """
+    Load guide points from guides.csv.
+    
+    Returns:
+        Dict mapping shape_id to list of (lon, lat, position) tuples, where position
+        is the index in the stop sequence where the guide point should be inserted
+    """
+    guides_csv_path = Path(script_dir) / "guides.csv"
+    
+    # Return empty dict if file doesn't exist or is empty
+    if not guides_csv_path.exists():
+        return {}
+    
+    try:
+        df = pd.read_csv(guides_csv_path)
+        
+        # Return empty dict if CSV is empty or missing required columns
+        if df.empty or not all(col in df.columns for col in ['shape_id', 'stop_lat', 'stop_lon', 'position']):
+            return {}
+        
+        guides_dict = {}
+        for _, row in df.iterrows():
+            shape_id = row["shape_id"]
+            if shape_id not in guides_dict:
+                guides_dict[shape_id] = []
+            guides_dict[shape_id].append((row["stop_lon"], row["stop_lat"], int(row["position"])))
+        
+        return guides_dict
+        
+    except Exception as e:
+        print(f"⚠️ Warning: Could not load guides.csv: {e}")
+        return {}
+
+
 def generate_brouter_urls_cli():
     """
     Generate BRouter URLs for route planning and visualization.
@@ -82,7 +117,8 @@ def generate_brouter_urls_cli():
     - Export route geometries as GeoJSON files
     """
     nogos_dict = load_nogos_from_csv()
-    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict):
+    guides_dict = load_guides_from_csv()
+    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict, guides_dict):
         print(f"{route_id}: {url}")
 
 
@@ -208,8 +244,10 @@ def update_stop_positions(brouter_url, trip_id):
     """
     stops_csv_path = Path(script_dir) / "stops.csv"
     nogos_csv_path = Path(script_dir) / "nogos.csv"
+    guides_csv_path = Path(script_dir) / "guides.csv"
     nogos_dict = load_nogos_from_csv()
-    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, nogos_dict)
+    guides_dict = load_guides_from_csv()
+    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, guides_csv_path, nogos_dict, guides_dict)
     
     if "error" in result:
         print(f"❌ Error: {result['error']}")
@@ -265,6 +303,23 @@ def update_stop_positions(brouter_url, trip_id):
         print(f"⚠️  Nogos warning: {nogos_info['nogos_error']}")
     elif 'nogos_info' in result:
         print("ℹ️  No nogos found in BRouter URL")
+    
+    # Handle guide points information
+    guides_info = result.get('guides_info', {})
+    if guides_info.get('guides_csv_created'):
+        print(f"📄 Created {guides_csv_path}")
+    
+    if guides_info.get('guides_updated'):
+        shape_id = guides_info['shape_id']
+        guides_count = guides_info['guides_count']
+        print(f"🧭 Updated {guides_count} guide points for shape '{shape_id}':")
+        for i, (lon, lat, position) in enumerate(guides_info['guides'], 1):
+            print(f"   {i}. {lat:.6f}, {lon:.6f} (position: {position})")
+        print(f"✅ Updated {guides_csv_path}")
+    elif guides_info.get('guides_error'):
+        print(f"⚠️  Guides warning: {guides_info['guides_error']}")
+    elif 'guides_info' in result:
+        print("ℹ️  No guide points found in BRouter URL")
 
 
 
