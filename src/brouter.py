@@ -125,6 +125,57 @@ def extract_pois_from_brouter_url(url):
         return []
 
 
+def extract_straight_from_brouter_url(url):
+    """
+    Extract straight line segment indices from BRouter URL.
+    
+    Args:
+        url: BRouter URL containing straight parameter
+        
+    Returns:
+        List of integers representing waypoint indices that should be straight lines, or empty list if parsing fails
+    """
+    try:
+        # Parse the URL into components
+        parsed = urlparse(url)
+        
+        # Handle fragment-based URLs (BRouter uses hash fragments)
+        if parsed.fragment:
+            # Extract query parameters from the fragment
+            fragment_parts = parsed.fragment.split('&')
+            query_params = {}
+            for part in fragment_parts:
+                if '=' in part:
+                    key, value = part.split('=', 1)
+                    query_params[key] = value
+            
+            straight_value = query_params.get('straight')
+        else:
+            # Handle query-based URLs
+            query_params = parse_qs(parsed.query)
+            straight_list = query_params.get('straight', [])
+            straight_value = straight_list[0] if straight_list else None
+        
+        if not straight_value:
+            return []
+        
+        # Parse comma-separated indices
+        indices = []
+        for index_str in straight_value.split(','):
+            try:
+                index = int(index_str.strip())
+                indices.append(index)
+            except ValueError:
+                # Skip invalid indices
+                continue
+        
+        return indices
+        
+    except Exception:
+        # Return empty list if any parsing fails
+        return []
+
+
 def extract_coords_from_brouter_url(url):
     """
     Extract coordinates from BRouter URL using proper URL parsing.
@@ -181,7 +232,7 @@ def extract_coords_from_brouter_url(url):
         return []
 
 
-def generate_brouter_urls(trips, stops, nogos=None, guides=None):
+def generate_brouter_urls(trips, stops, nogos=None, guides=None, straights=None):
     """
     Generate BRouter URLs for route planning and visualization.
     
@@ -190,6 +241,7 @@ def generate_brouter_urls(trips, stops, nogos=None, guides=None):
         stops: List of stop dictionaries with coordinates
         nogos: Dict mapping shape_id to list of (lon, lat, radius) tuples for no-go areas
         guides: Dict mapping shape_id to list of (lon, lat, position) tuples for guide points
+        straights: Dict mapping shape_id to list of waypoint indices for straight line segments
         
     Returns:
         Generator yielding (shape_id/trip_id, url) tuples
@@ -258,7 +310,14 @@ def generate_brouter_urls(trips, stops, nogos=None, guides=None):
             if poi_list:
                 pois_param = f"&pois={';'.join(poi_list)}"
         
-        url = f"{base}{lonlats}{suffix}{nogos_param}{pois_param}"
+        # Add straight parameter if specified for this shape_id
+        straight_param = ""
+        if straights and shape_id and shape_id in straights:
+            straight_indices = straights[shape_id]
+            if straight_indices:
+                straight_param = f"&straight={','.join(map(str, straight_indices))}"
+        
+        url = f"{base}{lonlats}{suffix}{nogos_param}{pois_param}{straight_param}"
 
         # Use shape_id and URL as key to avoid duplicate URLs for same route shape
         key = (trip.get("shape_id"), url)
@@ -306,6 +365,9 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
     new_coords = extract_coords_from_brouter_url(brouter_url)
     if not new_coords:
         return {"error": "Could not extract coordinates from BRouter URL - check that the URL contains a 'lonlats' parameter"}
+    
+    # Extract straight line indices from URL
+    straight_indices = extract_straight_from_brouter_url(brouter_url)
     
     # Extract POIs from URL to identify guide points
     pois = extract_pois_from_brouter_url(brouter_url)
@@ -523,6 +585,7 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
         "avg_distance_m": total_distance / total_moved if total_moved > 0 else 0,
         "updates": updates,
         "csv_updated": True,
+        "straight_indices": straight_indices,
         "nogos_info": nogos_info,
         "guides_info": guides_info
     }
