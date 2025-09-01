@@ -280,11 +280,18 @@ def generate_brouter_urls(trips, stops, nogos=None, guides=None, straights=None)
         shape_id = trip.get("shape_id")
         guide_pois = []
         if guides and shape_id and shape_id in guides:
-            # Sort guides by position to insert them in correct order
-            sorted_guides = sorted(guides[shape_id], key=lambda x: x[2])
+            # Handle both old 3-tuple and new 4-tuple formats
+            guide_list = guides[shape_id]
+            if guide_list and len(guide_list[0]) == 4:
+                # New format with order: (lon, lat, position, order) - sort by order for waypoint sequence
+                sorted_guides = sorted(guide_list, key=lambda x: x[3])
+                guide_tuples = [(lon, lat, position) for lon, lat, position, order in sorted_guides]
+            else:
+                # Old format: (lon, lat, position) - sort by position
+                guide_tuples = sorted(guide_list, key=lambda x: x[2])
             
             # Insert guides from end to beginning to maintain correct indices
-            for lon, lat, position in reversed(sorted_guides):
+            for lon, lat, position in reversed(guide_tuples):
                 if 0 <= position <= len(coords):
                     coords.insert(position, (lon, lat))
                     guide_pois.append((lon, lat, "GUIDE"))
@@ -329,10 +336,10 @@ def generate_brouter_urls(trips, stops, nogos=None, guides=None, straights=None)
         yield (trip.get('shape_id') or trip['trip_id'], url)
 
 
-def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, nogos_csv_path=None, guides_csv_path=None, nogos=None, guides=None):
+def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, nogos_csv_path=None, guides_csv_path=None, straights_csv_path=None, nogos=None, guides=None):
     """
     Update stop positions in stops.csv from a modified BRouter URL.
-    Also extracts nogos and guide points from the URL and saves them to respective CSV files if paths provided.
+    Also extracts nogos, guide points, and straight line indices from the URL and saves them to respective CSV files if paths provided.
     
     Args:
         brouter_url: Modified BRouter URL with new coordinates
@@ -341,6 +348,7 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
         stops_csv_path: Path to stops.csv file
         nogos_csv_path: Path to nogos.csv file (optional)
         guides_csv_path: Path to guides.csv file (optional)
+        straights_csv_path: Path to straights.csv file (optional)
         nogos: Dict mapping shape_id to list of (lon, lat, radius) tuples for no-go areas
         guides: Dict mapping shape_id to list of (lon, lat, position) tuples for guide points
         
@@ -373,6 +381,30 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
     pois = extract_pois_from_brouter_url(brouter_url)
     guide_pois = [(lon, lat) for lon, lat, label in pois if label == "GUIDE"]
     
+    # Extract nogos from URL
+    nogos_from_url = extract_nogos_from_brouter_url(brouter_url)
+    
+    # Print URL analysis
+    print(f"\n📍 BRouter URL Analysis:")
+    print(f"   Total coordinates: {len(new_coords)}")
+    print(f"   GUIDE POIs: {len(guide_pois)}")
+    print(f"   Straight line indices: {straight_indices}")
+    print(f"   No-go areas: {len(nogos_from_url)}")
+    
+    print(f"\n📊 Coordinates breakdown:")
+    for i, (lon, lat) in enumerate(new_coords):
+        coord_type = "COORDINATE"
+        if any(abs(lon - g_lon) < 0.0001 and abs(lat - g_lat) < 0.0001 for g_lon, g_lat in guide_pois):
+            coord_type = "GUIDE"
+        if i in straight_indices:
+            coord_type += " (straight)"
+        print(f"   {i:2d}: {lon:9.6f}, {lat:8.6f} - {coord_type}")
+    
+    if nogos_from_url:
+        print(f"\n🚫 No-go areas:")
+        for lon, lat, radius in nogos_from_url:
+            print(f"   {lon:9.6f}, {lat:8.6f} - radius {radius}m")
+    
     # Find the trip
     trip = next((t for t in trips if t['trip_id'] == trip_id), None)
     if not trip:
@@ -396,29 +428,42 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
     # Get original stop sequence
     sorted_stop_times = sorted(trip["stop_times"], key=lambda x: x[0])
     
+    print(f"\n🚌 Trip '{trip_id}' has {len(sorted_stop_times)} stops:")
+    for i, (time_str, stop_id) in enumerate(sorted_stop_times):
+        print(f"   {i:2d}: {stop_id} at {time_str}")
+    
     # Filter out guide points from coordinates by finding closest matches to GUIDE POIs
     stop_coords = []
     detected_guides = []
     guide_indices = set()
+    available_coords = set(range(len(new_coords)))  # Track which coordinates are still available
     
-    # For each GUIDE POI, find the closest route coordinate
+    # For each GUIDE POI, find the closest available coordinate (one-to-one mapping)
     for guide_lon, guide_lat in guide_pois:
         closest_distance = float('inf')
         closest_index = -1
         
-        for i, (lon, lat) in enumerate(new_coords):
-            if i in guide_indices:  # Skip already assigned guides
-                continue
-                
+        # Find the closest available coordinate
+        for i in available_coords:
+            lon, lat = new_coords[i]
             distance_m = geodesic((lat, lon), (guide_lat, guide_lon)).meters
-            if distance_m < closest_distance and distance_m <= 100:  # 100m max threshold
+            if distance_m < closest_distance:
                 closest_distance = distance_m
                 closest_index = i
         
+        # Always match to the closest available coordinate
         if closest_index >= 0:
+            # Add warning if guide is more than 5 meters away from matched coordinate
+            if closest_distance > 5.0:
+                print(f"⚠️  Warning: GUIDE POI at ({guide_lat:.6f}, {guide_lon:.6f}) is {closest_distance:.1f}m away from closest coordinate")
+            
             guide_indices.add(closest_index)
+            available_coords.remove(closest_index)  # Mark coordinate as taken
             lon, lat = new_coords[closest_index]
             detected_guides.append((lon, lat, closest_index))
+        else:
+            # This should never happen if we have the right number of coordinates
+            print(f"⚠️ Warning: GUIDE POI at {guide_lon}, {guide_lat} could not be matched to any available coordinate")
     
     # Build stop_coords excluding guide indices
     for i, (lon, lat) in enumerate(new_coords):
@@ -427,12 +472,29 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
     
     # Validate lengths match after removing guides
     if len(stop_coords) != len(sorted_stop_times):
+        print(f"\n❌ Coordinate count mismatch:")
+        print(f"   URL has {len(new_coords)} total coordinates")
+        print(f"   Found {len(guide_pois)} GUIDE POIs in URL")
+        print(f"   Detected {len(detected_guides)} GUIDE point matches")
+        print(f"   Unique guide coordinate indices: {len(guide_indices)}")
+        print(f"   Remaining coordinates after removing guides: {len(stop_coords)}")
+        print(f"   Trip '{trip_id}' expects {len(sorted_stop_times)} stops")
+        print(f"   Mismatch: {len(stop_coords)} coordinates vs {len(sorted_stop_times)} expected stops")
+        
+        # Show which guide indices have multiple POIs
+        from collections import Counter
+        guide_index_counts = Counter(guide_index for _, _, guide_index in detected_guides)
+        duplicates = {idx: count for idx, count in guide_index_counts.items() if count > 1}
+        if duplicates:
+            print(f"   Multiple GUIDE POIs mapped to same coordinates: {duplicates}")
+        
         return {
-            "error": "Coordinate count mismatch after removing guide points",
-            "url_coords": len(new_coords),
-            "stop_coords": len(stop_coords),
-            "trip_stops": len(sorted_stop_times),
-            "detected_guides": len(detected_guides)
+            "error": f"Coordinate count mismatch: {len(stop_coords)} coordinates remaining after removing {len(guide_indices)} unique guide coordinates (from {len(detected_guides)} guide matches), but trip expects {len(sorted_stop_times)} stops",
+            "url_total_coords": len(new_coords),
+            "detected_guides": len(detected_guides),
+            "remaining_coords": len(stop_coords),
+            "expected_stops": len(sorted_stop_times),
+            "difference": len(stop_coords) - len(sorted_stop_times)
         }
     
     # Compare and update coordinates
@@ -537,7 +599,7 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
         
         # Create guides.csv if it doesn't exist
         if not guides_csv_path.exists():
-            guides_df = pd.DataFrame(columns=['shape_id', 'stop_lat', 'stop_lon', 'position'])
+            guides_df = pd.DataFrame(columns=['shape_id', 'stop_lat', 'stop_lon', 'position', 'order'])
             guides_df.to_csv(guides_csv_path, index=False)
             guides_info["guides_csv_created"] = True
         
@@ -549,8 +611,11 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
             guides_df = guides_df[guides_df['shape_id'] != shape_id]
             
             # Add new guides with their positions in the coordinate sequence
+            # Sort detected_guides by original_position to maintain waypoint order
+            sorted_guides = sorted(detected_guides, key=lambda x: x[2])
+            
             new_guides = []
-            for lon, lat, original_position in detected_guides:
+            for order_idx, (lon, lat, original_position) in enumerate(sorted_guides):
                 # Calculate position relative to stops (before guides were inserted)
                 position_in_stops = sum(1 for _, _, pos in detected_guides if pos < original_position)
                 position = original_position - position_in_stops
@@ -559,7 +624,8 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
                     'shape_id': shape_id,
                     'stop_lat': lat,
                     'stop_lon': lon,
-                    'position': position
+                    'position': position,
+                    'order': order_idx
                 })
             
             if new_guides:
@@ -577,6 +643,43 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
         except Exception as e:
             guides_info["guides_error"] = f"Could not update guides.csv: {e}"
     
+    # Extract and save straight line indices if straights_csv_path provided
+    straights_info = {}
+    if straights_csv_path and straight_indices and trip.get("shape_id"):
+        shape_id = trip["shape_id"]
+        
+        # Create straights.csv if it doesn't exist
+        if not straights_csv_path.exists():
+            straights_df = pd.DataFrame(columns=['shape_id', 'indices'])
+            straights_df.to_csv(straights_csv_path, index=False)
+            straights_info["straights_csv_created"] = True
+        
+        try:
+            # Load existing straights
+            straights_df = pd.read_csv(straights_csv_path)
+            
+            # Remove existing straights for this shape_id
+            straights_df = straights_df[straights_df['shape_id'] != shape_id]
+            
+            # Add new straight line indices as comma-separated string
+            indices_str = ','.join(map(str, straight_indices))
+            new_straights = pd.DataFrame([{
+                'shape_id': shape_id,
+                'indices': indices_str
+            }])
+            
+            straights_df = pd.concat([straights_df, new_straights], ignore_index=True)
+            straights_df.to_csv(straights_csv_path, index=False)
+            
+            straights_info.update({
+                "straights_updated": True,
+                "shape_id": shape_id,
+                "indices": straight_indices
+            })
+            
+        except Exception as e:
+            straights_info["straights_error"] = f"Could not update straights.csv: {e}"
+    
     return {
         "trip_id": trip_id,
         "total_stops": len(updates),
@@ -587,7 +690,8 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
         "csv_updated": True,
         "straight_indices": straight_indices,
         "nogos_info": nogos_info,
-        "guides_info": guides_info
+        "guides_info": guides_info,
+        "straights_info": straights_info
     }
 
 
