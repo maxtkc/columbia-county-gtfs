@@ -650,7 +650,7 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
         
         # Create straights.csv if it doesn't exist
         if not straights_csv_path.exists():
-            straights_df = pd.DataFrame(columns=['shape_id', 'indices'])
+            straights_df = pd.DataFrame(columns=['shape_id', 'index'])
             straights_df.to_csv(straights_csv_path, index=False)
             straights_info["straights_csv_created"] = True
         
@@ -661,12 +661,9 @@ def update_stop_positions_from_url(brouter_url, trip_id, trips, stops_csv_path, 
             # Remove existing straights for this shape_id
             straights_df = straights_df[straights_df['shape_id'] != shape_id]
             
-            # Add new straight line indices as comma-separated string
-            indices_str = ','.join(map(str, straight_indices))
-            new_straights = pd.DataFrame([{
-                'shape_id': shape_id,
-                'indices': indices_str
-            }])
+            # Add new straight line indices as separate rows
+            new_straights_data = [{'shape_id': shape_id, 'index': idx} for idx in straight_indices]
+            new_straights = pd.DataFrame(new_straights_data)
             
             straights_df = pd.concat([straights_df, new_straights], ignore_index=True)
             straights_df.to_csv(straights_csv_path, index=False)

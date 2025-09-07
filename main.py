@@ -126,18 +126,9 @@ def load_straights_from_csv(straights_csv_path=None):
         df = pd.read_csv(straights_csv_path)
         straights_dict = {}
         
-        for _, row in df.iterrows():
-            shape_id = row['shape_id']
-            indices_str = row['indices']
-            
-            # Parse comma-separated indices
-            indices = []
-            for index_str in indices_str.split(','):
-                try:
-                    indices.append(int(index_str.strip()))
-                except ValueError:
-                    continue
-            
+        # Group by shape_id and collect indices
+        for shape_id, group in df.groupby('shape_id'):
+            indices = group['index'].tolist()
             straights_dict[shape_id] = indices
         
         return straights_dict
