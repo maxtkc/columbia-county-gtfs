@@ -27,7 +27,7 @@ from src.gtfs_lib import DirectionId, RouteTypes, ServiceAvailable, ServiceExcep
 # =============================================================================
 
 # Agency information constants
-AGENCY_ID = "CC"  # Columbia County agency identifier
+AGENCY_ID = "CCPT"  # Columbia County agency identifier
 AGENCY_EMAIL = "transportation@columbiacountyny.com"
 
 # Route identifiers for Columbia County transit system
