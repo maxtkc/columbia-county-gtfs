@@ -9,7 +9,7 @@ standard GTFS feed files.
 
 Key data structures:
 - AGENCY: Transit agency information
-- ROUTES: Route definitions (SHOPPING, HUD_ALB, HUD_CHT, MOND)
+- ROUTES: Route definitions (SHOPPING, HUD_ALB, HUD_CHT)
 - STOPS: Stop locations with coordinates
 - TRIPS: Trip definitions with stop_times schedules
 - CALENDAR/CALENDAR_DATES: Service patterns and exceptions
@@ -31,14 +31,12 @@ AGENCY_ID = "CC"  # Columbia County agency identifier
 AGENCY_EMAIL = "transportation@columbiacountyny.com"
 
 # Route identifiers for Columbia County transit system
-SHOPPING = "SHOPPING"  # Shopping loop route
-HUD_ALB = "HUD_ALB"  # Hudson to Albany route
-HUD_CHT = "HUD_CHT"  # Hudson to Chatham route
-MOND = "MOND"  # Monday-only service routes
+SHOPPING = "Shopping"  # Shopping loop route
+HUD_ALB = "Albany-Commuter"  # Hudson to Albany route
+HUD_CHT = "Chatham-Hudson"  # Hudson to Chatham route
 
 # Service pattern identifiers for different operating schedules
 DAILY_SERVICE_ID = "DAILY"  # Every day service
-MONDAY_SERVICE_ID = "MONDAY"  # Monday-only service
 TUES_FRI_SERVICE_ID = "TUES_FRI"  # Tuesday and Friday service
 WEEKDAY_SERVICE_ID = "WEEKDAY"  # Monday through Friday service
 SATURDAY_SERVICE_ID = "SATURDAY"  # Saturday-only service
@@ -96,13 +94,6 @@ ROUTES = [
         "agency_id": AGENCY_ID,
         "route_long_name": "Chatham-Hudson Bus Route",
         "route_desc": "Tuesday and Friday free service between Chatham and Hudson",
-        "route_type": RouteTypes.BUS.value,
-    },
-    {
-        "route_id": MOND,  # Monday-only county service
-        "agency_id": AGENCY_ID,
-        "route_long_name": "Monday County Bus",
-        "route_desc": "Monday morning bus service through various shopping locations in the county",
         "route_type": RouteTypes.BUS.value,
     },
 ]
@@ -1150,18 +1141,6 @@ CALENDAR = [
         "end_date": 20291231,
     },
     {
-        "service_id": MONDAY_SERVICE_ID,
-        "monday": ServiceAvailable.YES.value,
-        "tuesday": ServiceAvailable.NO.value,
-        "wednesday": ServiceAvailable.NO.value,
-        "thursday": ServiceAvailable.NO.value,
-        "friday": ServiceAvailable.NO.value,
-        "saturday": ServiceAvailable.NO.value,
-        "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
-        "end_date": 20291231,
-    },
-    {
         "service_id": TUES_FRI_SERVICE_ID,
         "monday": ServiceAvailable.NO.value,
         "tuesday": ServiceAvailable.YES.value,
@@ -1205,7 +1184,6 @@ CALENDAR_DATES = [
     # Apply holiday exceptions to all service patterns
     for service_id in [
         DAILY_SERVICE_ID,
-        MONDAY_SERVICE_ID,
         TUES_FRI_SERVICE_ID,
         WEEKDAY_SERVICE_ID,
         SATURDAY_SERVICE_ID,
