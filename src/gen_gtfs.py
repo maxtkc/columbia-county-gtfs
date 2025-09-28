@@ -1164,6 +1164,30 @@ CALENDAR = [
         "start_date": 20250102,
         "end_date": 20291231,
     },
+    {
+        "service_id": SATURDAY_SERVICE_ID,
+        "monday": ServiceAvailable.NO.value,
+        "tuesday": ServiceAvailable.NO.value,
+        "wednesday": ServiceAvailable.NO.value,
+        "thursday": ServiceAvailable.NO.value,
+        "friday": ServiceAvailable.NO.value,
+        "saturday": ServiceAvailable.YES.value,
+        "sunday": ServiceAvailable.NO.value,
+        "start_date": 20250102,
+        "end_date": 20291231,
+    },
+    {
+        "service_id": SUNDAY_SERVICE_ID,
+        "monday": ServiceAvailable.NO.value,
+        "tuesday": ServiceAvailable.NO.value,
+        "wednesday": ServiceAvailable.NO.value,
+        "thursday": ServiceAvailable.NO.value,
+        "friday": ServiceAvailable.NO.value,
+        "saturday": ServiceAvailable.NO.value,
+        "sunday": ServiceAvailable.YES.value,
+        "start_date": 20250102,
+        "end_date": 20291231,
+    },
 ]
 
 
