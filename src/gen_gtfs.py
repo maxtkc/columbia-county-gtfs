@@ -79,6 +79,7 @@ ROUTES = [
         "route_id": SHOPPING,  # Shopping loop route identifier
         "agency_id": AGENCY_ID,
         "route_long_name": "Hudson-Greenport Shopping Shuttle",
+        "route_short_name": "",  # Required by big brother (Google)
         "route_desc": "Daily service looping through many shopping locations between Hudson and Greenport",
         "route_type": RouteTypes.BUS.value,  # GTFS route type: bus service
     },
@@ -86,6 +87,7 @@ ROUTES = [
         "route_id": HUD_ALB,  # Hudson-Albany commuter route
         "agency_id": AGENCY_ID,
         "route_long_name": "Hudson-Albany Commuter Shuttle",
+        "route_short_name": "",  # Required by big brother (Google)
         "route_desc": "Weekday shuttle service between Hudson and Albany",
         "route_type": RouteTypes.BUS.value,
     },
@@ -93,6 +95,7 @@ ROUTES = [
         "route_id": HUD_CHT,  # Hudson-Chatham route
         "agency_id": AGENCY_ID,
         "route_long_name": "Chatham-Hudson Bus Route",
+        "route_short_name": "",  # Required by big brother (Google)
         "route_desc": "Tuesday and Friday free service between Chatham and Hudson",
         "route_type": RouteTypes.BUS.value,
     },
