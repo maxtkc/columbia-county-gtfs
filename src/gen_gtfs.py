@@ -66,7 +66,7 @@ FEED_INFO = {
     "feed_contact_url": AGENCY["agency_url"],  # Contact website
     "feed_lang": "en-US",  # Primary language of feed
     "feed_version": 1,  # Version number of this feed
-    "feed_start_date": 20250102,  # First date of service (YYYYMMDD)
+    "feed_start_date": 20260102,  # First date of service (YYYYMMDD)
     "feed_end_date": 20291231,  # Last date of service (YYYYMMDD)
 }
 
@@ -1140,7 +1140,7 @@ CALENDAR = [
         "friday": ServiceAvailable.YES.value,
         "saturday": ServiceAvailable.YES.value,
         "sunday": ServiceAvailable.YES.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
     {
@@ -1152,7 +1152,7 @@ CALENDAR = [
         "friday": ServiceAvailable.NO.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
     {
@@ -1164,7 +1164,7 @@ CALENDAR = [
         "friday": ServiceAvailable.YES.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
     {
@@ -1176,7 +1176,7 @@ CALENDAR = [
         "friday": ServiceAvailable.NO.value,
         "saturday": ServiceAvailable.YES.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
     {
@@ -1188,7 +1188,7 @@ CALENDAR = [
         "friday": ServiceAvailable.NO.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.YES.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
 ]
@@ -1199,7 +1199,7 @@ CALENDAR = [
 # =============================================================================
 
 # Generate service exceptions for US federal holidays and Easter
-years = range(2025, 2030)  # Years covered by this GTFS feed
+years = range(2026, 2030)  # Years covered by this GTFS feed
 CALENDAR_DATES = [
     {
         "service_id": service_id,  # Apply exception to this service pattern
