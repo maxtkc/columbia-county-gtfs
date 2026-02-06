@@ -26,7 +26,7 @@ Transportation](https://publictransportation.columbiacountyny.com/).
 ### Generate GTFS Feed
 Create the complete GTFS feed zip file:
 ```bash
-python main.py --gen-gtfs
+python main.py gen-gtfs
 ```
 This generates `columbia_county_gtfs.zip` containing all required GTFS files.
 
@@ -35,13 +35,13 @@ This generates `columbia_county_gtfs.zip` containing all required GTFS files.
 New stops can be added by adding them to the `stops.txt` file. Leave the uuid
 blank and generate it with
 ```bash
-python main.py --gen-stops
+python main.py gen-stops
 ```
 
 ### Generate Route Planning URLs
 Create BRouter URLs for making geojson routes.
 ```bash
-python main.py --gen-brouter-urls
+python main.py gen-brouter-urls
 ```
 
 Make sure to name the geojson file the same as the `shape_id` and place it in
@@ -69,7 +69,7 @@ To modify a route without adding new stops:
 
 1. **Generate BRouter URL for the route:**
    ```bash
-   python main.py --gen-brouter-urls
+   python main.py gen-brouter-urls
    ```
    Copy the URL for the route you want to modify.
 
@@ -122,7 +122,7 @@ Stop information is managed through:
 #### Create Route Map
 You can use [https://brouter.de/brouter-web/](https://brouter.de/brouter-web/)
 as an intermediary tool to create map of each of the routes. `main.py
---gen-brouter-urls` produces a unique URL for each route, and each route
+gen-brouter-urls` produces a unique URL for each route, and each route
 version. 
 
 ### Trips and Schedules
@@ -152,10 +152,10 @@ The generated feed includes all standard GTFS files:
 ## Contributing
 
 When modifying transit data:
-1. Update stop definitions in `stops.csv` and run `python main.py --gen-stops`
+1. Update stop definitions in `stops.csv` and run `python main.py gen-stops`
 2. Update route/stop definitions in `src/gen_gtfs.py`
-3. Add/update GeoJSON shape files in `shapes/` directory using `python main.py --gen-brouter-urls` as needed
-4. Run `python main.py --gen-gtfs` to regenerate the feed
+3. Add/update GeoJSON shape files in `shapes/` directory using `python main.py gen-brouter-urls` as needed
+4. Run `python main.py gen-gtfs` to regenerate the feed
 5. Test the generated GTFS feed with [validators](https://gtfs-validator.mobilitydata.org/)
 
 ## Contact
