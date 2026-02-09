@@ -32,14 +32,13 @@ This generates `columbia_county_gtfs.zip` containing all required GTFS files.
 
 ### Manage Stops
 
-New stops can be added by adding them to the `stops.txt` file. Leave the uuid
-blank and generate it with
+New stops can be added by adding them to the `stops.txt` file. Use `stops.txt` to edit stop names and locations. Leave the uuid blank and generate it with
 ```bash
 python main.py gen-stops
 ```
 
 ### Generate Route Planning URLs
-Create BRouter URLs for making geojson routes.
+Create BRouter URLs for making geojson routes. To change the path of an existing route, re-create the geojson.
 ```bash
 python main.py gen-brouter-urls
 ```
