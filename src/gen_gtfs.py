@@ -881,7 +881,7 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB",
         "stop_times": [
-            ("06:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("06:15", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("06:17", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
             ("06:19", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("06:25", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
@@ -902,7 +902,7 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB_NO_STATE",
         "stop_times": [
-            ("07:00", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("07:00", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("07:02", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
             ("07:04", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("07:10", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
@@ -922,7 +922,7 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB",
         "stop_times": [
-            ("14:30", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("14:30", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("14:32", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
             ("14:34", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("14:40", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
@@ -943,7 +943,7 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB_NO_STATE",
         "stop_times": [
-            ("16:00", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("16:00", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("16:02", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
             ("16:04", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("16:10", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
@@ -974,7 +974,7 @@ TRIPS = [
             ("08:25", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("08:31", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("08:33", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("08:35", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("08:35", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -996,7 +996,7 @@ TRIPS = [
             ("09:05", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("09:11", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("09:13", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("09:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("09:15", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -1018,7 +1018,7 @@ TRIPS = [
             ("17:22", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("17:27", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("17:30", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("17:32", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("17:32", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -1040,7 +1040,7 @@ TRIPS = [
             ("18:05", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("18:11", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("18:13", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("18:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("18:15", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
