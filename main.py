@@ -68,6 +68,76 @@ def load_nogos_from_csv():
         return {}
 
 
+def load_guides_from_csv():
+    """
+    Load guide points from guides.csv.
+    
+    Returns:
+        Dict mapping shape_id to list of (lon, lat, position) tuples, where position
+        is the index in the stop sequence where the guide point should be inserted
+    """
+    guides_csv_path = Path(script_dir) / "guides.csv"
+    
+    # Return empty dict if file doesn't exist or is empty
+    if not guides_csv_path.exists():
+        return {}
+    
+    try:
+        df = pd.read_csv(guides_csv_path)
+        
+        # Return empty dict if CSV is empty or missing required columns
+        if df.empty or not all(col in df.columns for col in ['shape_id', 'stop_lat', 'stop_lon', 'position']):
+            return {}
+        
+        guides_dict = {}
+        for _, row in df.iterrows():
+            shape_id = row["shape_id"]
+            if shape_id not in guides_dict:
+                guides_dict[shape_id] = []
+            # Include order if available, otherwise default to 0
+            order = int(row["order"]) if "order" in row and pd.notna(row["order"]) else 0
+            guides_dict[shape_id].append((row["stop_lon"], row["stop_lat"], int(row["position"]), order))
+        
+        # Sort guides by order to ensure they're processed in waypoint sequence
+        for shape_id in guides_dict:
+            guides_dict[shape_id].sort(key=lambda x: x[3])  # Sort by order (4th element)
+        
+        return guides_dict
+        
+    except Exception as e:
+        print(f"⚠️ Warning: Could not load guides.csv: {e}")
+        return {}
+
+
+def load_straights_from_csv(straights_csv_path=None):
+    """
+    Load straight line segment indices from straights.csv file.
+    
+    Returns:
+        Dict mapping shape_id to list of integers (waypoint indices)
+    """
+    if straights_csv_path is None:
+        straights_csv_path = Path(script_dir) / "straights.csv"
+    
+    if not straights_csv_path.exists():
+        return {}
+    
+    try:
+        df = pd.read_csv(straights_csv_path)
+        straights_dict = {}
+        
+        # Group by shape_id and collect indices
+        for shape_id, group in df.groupby('shape_id'):
+            indices = group['index'].tolist()
+            straights_dict[shape_id] = indices
+        
+        return straights_dict
+        
+    except Exception as e:
+        print(f"Warning: Could not load straights from {straights_csv_path}: {e}")
+        return {}
+
+
 def generate_brouter_urls_cli():
     """
     Generate BRouter URLs for route planning and visualization.
@@ -82,7 +152,9 @@ def generate_brouter_urls_cli():
     - Export route geometries as GeoJSON files
     """
     nogos_dict = load_nogos_from_csv()
-    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict):
+    guides_dict = load_guides_from_csv()
+    straights_dict = load_straights_from_csv()
+    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict, guides_dict, straights_dict):
         print(f"{route_id}: {url}")
 
 
@@ -208,8 +280,11 @@ def update_stop_positions(brouter_url, trip_id):
     """
     stops_csv_path = Path(script_dir) / "stops.csv"
     nogos_csv_path = Path(script_dir) / "nogos.csv"
+    guides_csv_path = Path(script_dir) / "guides.csv"
+    straights_csv_path = Path(script_dir) / "straights.csv"
     nogos_dict = load_nogos_from_csv()
-    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, nogos_dict)
+    guides_dict = load_guides_from_csv()
+    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, guides_csv_path, straights_csv_path, nogos_dict, guides_dict)
     
     if "error" in result:
         print(f"❌ Error: {result['error']}")
@@ -265,55 +340,84 @@ def update_stop_positions(brouter_url, trip_id):
         print(f"⚠️  Nogos warning: {nogos_info['nogos_error']}")
     elif 'nogos_info' in result:
         print("ℹ️  No nogos found in BRouter URL")
+    
+    # Handle guide points information
+    guides_info = result.get('guides_info', {})
+    if guides_info.get('guides_csv_created'):
+        print(f"📄 Created {guides_csv_path}")
+    
+    if guides_info.get('guides_updated'):
+        shape_id = guides_info['shape_id']
+        guides_count = guides_info['guides_count']
+        print(f"🧭 Updated {guides_count} guide points for shape '{shape_id}':")
+        for i, (lon, lat, position) in enumerate(guides_info['guides'], 1):
+            print(f"   {i}. {lat:.6f}, {lon:.6f} (position: {position})")
+        print(f"✅ Updated {guides_csv_path}")
+    elif guides_info.get('guides_error'):
+        print(f"⚠️  Guides warning: {guides_info['guides_error']}")
+    elif 'guides_info' in result:
+        print("ℹ️  No guide points found in BRouter URL")
+    
+    # Handle straight line segments information
+    straights_info = result.get('straights_info', {})
+    if straights_info.get('straights_csv_created'):
+        print(f"📄 Created {straights_csv_path}")
+    
+    if straights_info.get('straights_updated'):
+        shape_id = straights_info['shape_id']
+        indices = straights_info['indices']
+        indices_str = ','.join(map(str, indices))
+        print(f"📏 Updated straight line segments for shape '{shape_id}': [{indices_str}]")
+        print(f"✅ Updated {straights_csv_path}")
+    elif straights_info.get('straights_error'):
+        print(f"⚠️  Straights warning: {straights_info['straights_error']}")
+    elif 'straights_info' in result:
+        print("ℹ️  No straight line segments found in BRouter URL")
 
 
 
 if __name__ == "__main__":
-    # Set up command-line argument parser
+    # Set up command-line argument parser with subcommands
     parser = argparse.ArgumentParser(
         description="Columbia County GTFS Feed Generator - Generate transit data feeds and route planning tools"
     )
-    parser.add_argument("--gen-gtfs", action="store_true", help="Generate GTFS zip")
-    parser.add_argument(
-        "--gen-stops",
-        action="store_true",
-        help="Generate stops Python code and update stops.csv",
-    )
-    parser.add_argument(
-        "--gen-brouter-urls",
-        action="store_true",
-        help="Generate BRouter URLs for trips",
-    )
-    parser.add_argument(
-        "--update-stop-positions",
-        action="store_true",
-        help="Update stop positions from modified BRouter URL",
-    )
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    # Generate GTFS zip file
+    gtfs_parser = subparsers.add_parser("gen-gtfs", help="Generate GTFS zip")
+
+    # Generate stops Python code and update stops.csv
+    stops_parser = subparsers.add_parser("gen-stops", help="Generate stops Python code and update stops.csv")
+
+    # Generate BRouter URLs for trips
+    brouter_parser = subparsers.add_parser("gen-brouter-urls", help="Generate BRouter URLs for trips")
+
+    # Update stop positions from modified BRouter URL
+    update_parser = subparsers.add_parser("update-stop-positions", help="Update stop positions from modified BRouter URL")
+    update_parser.add_argument(
         "--brouter-url",
         type=str,
+        required=True,
         help="Modified BRouter URL with new coordinates",
     )
-    parser.add_argument(
+    update_parser.add_argument(
         "--trip-id",
         type=str,
+        required=True,
         help="Trip ID to compare against",
     )
+
     args = parser.parse_args()
 
     # Execute the requested command
-    if args.gen_gtfs:
+    if args.command == "gen-gtfs":
         generate_gtfs()
-    elif args.gen_stops:
+    elif args.command == "gen-stops":
         generate_stops()
-    elif args.gen_brouter_urls:
+    elif args.command == "gen-brouter-urls":
         generate_brouter_urls_cli()
-    elif args.update_stop_positions:
-        if not args.brouter_url or not args.trip_id:
-            print("❌ Error: --brouter-url and --trip-id are required with --update-stop-positions")
-            parser.print_help()
-        else:
-            update_stop_positions(args.brouter_url, args.trip_id)
+    elif args.command == "update-stop-positions":
+        update_stop_positions(args.brouter_url, args.trip_id)
     else:
         # No command specified, show help
         parser.print_help()
