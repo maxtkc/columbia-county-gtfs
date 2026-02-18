@@ -9,7 +9,7 @@ standard GTFS feed files.
 
 Key data structures:
 - AGENCY: Transit agency information
-- ROUTES: Route definitions (SHOPPING, HUD_ALB, HUD_CHT, MOND)
+- ROUTES: Route definitions (SHOPPING, HUD_ALB, HUD_CHT)
 - STOPS: Stop locations with coordinates
 - TRIPS: Trip definitions with stop_times schedules
 - CALENDAR/CALENDAR_DATES: Service patterns and exceptions
@@ -27,18 +27,16 @@ from src.gtfs_lib import DirectionId, RouteTypes, ServiceAvailable, ServiceExcep
 # =============================================================================
 
 # Agency information constants
-AGENCY_ID = "CC"  # Columbia County agency identifier
+AGENCY_ID = "CCPT"  # Columbia County agency identifier
 AGENCY_EMAIL = "transportation@columbiacountyny.com"
 
 # Route identifiers for Columbia County transit system
-SHOPPING = "SHOPPING"  # Shopping loop route
-HUD_ALB = "HUD_ALB"  # Hudson to Albany route
-HUD_CHT = "HUD_CHT"  # Hudson to Chatham route
-MOND = "MOND"  # Monday-only service routes
+SHOPPING = "Shopping"  # Shopping loop route
+HUD_ALB = "Albany-Commuter"  # Hudson to Albany route
+HUD_CHT = "Chatham-Hudson"  # Hudson to Chatham route
 
 # Service pattern identifiers for different operating schedules
 DAILY_SERVICE_ID = "DAILY"  # Every day service
-MONDAY_SERVICE_ID = "MONDAY"  # Monday-only service
 TUES_FRI_SERVICE_ID = "TUES_FRI"  # Tuesday and Friday service
 WEEKDAY_SERVICE_ID = "WEEKDAY"  # Monday through Friday service
 SATURDAY_SERVICE_ID = "SATURDAY"  # Saturday-only service
@@ -68,7 +66,7 @@ FEED_INFO = {
     "feed_contact_url": AGENCY["agency_url"],  # Contact website
     "feed_lang": "en-US",  # Primary language of feed
     "feed_version": 1,  # Version number of this feed
-    "feed_start_date": 20250102,  # First date of service (YYYYMMDD)
+    "feed_start_date": 20260102,  # First date of service (YYYYMMDD)
     "feed_end_date": 20291231,  # Last date of service (YYYYMMDD)
 }
 
@@ -81,6 +79,7 @@ ROUTES = [
         "route_id": SHOPPING,  # Shopping loop route identifier
         "agency_id": AGENCY_ID,
         "route_long_name": "Hudson-Greenport Shopping Shuttle",
+        "route_short_name": "",  # Required by big brother (Google)
         "route_desc": "Daily service looping through many shopping locations between Hudson and Greenport",
         "route_type": RouteTypes.BUS.value,  # GTFS route type: bus service
     },
@@ -88,6 +87,7 @@ ROUTES = [
         "route_id": HUD_ALB,  # Hudson-Albany commuter route
         "agency_id": AGENCY_ID,
         "route_long_name": "Hudson-Albany Commuter Shuttle",
+        "route_short_name": "",  # Required by big brother (Google)
         "route_desc": "Weekday shuttle service between Hudson and Albany",
         "route_type": RouteTypes.BUS.value,
     },
@@ -95,14 +95,8 @@ ROUTES = [
         "route_id": HUD_CHT,  # Hudson-Chatham route
         "agency_id": AGENCY_ID,
         "route_long_name": "Chatham-Hudson Bus Route",
+        "route_short_name": "",  # Required by big brother (Google)
         "route_desc": "Tuesday and Friday free service between Chatham and Hudson",
-        "route_type": RouteTypes.BUS.value,
-    },
-    {
-        "route_id": MOND,  # Monday-only county service
-        "agency_id": AGENCY_ID,
-        "route_long_name": "Monday County Bus",
-        "route_desc": "Monday morning bus service through various shopping locations in the county",
         "route_type": RouteTypes.BUS.value,
     },
 ]
@@ -887,9 +881,9 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB",
         "stop_times": [
-            ("06:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("06:15", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("06:17", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
-            ("06:19", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
+            ("06:19", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("06:25", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("06:30", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("06:35", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
@@ -908,9 +902,9 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB_NO_STATE",
         "stop_times": [
-            ("07:00", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("07:00", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("07:02", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
-            ("07:04", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
+            ("07:04", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("07:10", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("07:20", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("07:25", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
@@ -928,9 +922,9 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB",
         "stop_times": [
-            ("14:30", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("14:30", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("14:32", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
-            ("14:34", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
+            ("14:34", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("14:40", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("14:45", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("14:50", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
@@ -949,9 +943,9 @@ TRIPS = [
         "direction_id": DirectionId.INBOUND.value,
         "shape_id": "HUD_ALB_NB_NO_STATE",
         "stop_times": [
-            ("16:00", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("16:00", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
             ("16:02", "STOP-095817e8-46bf-48e4-bca2-77f095ed9012"),
-            ("16:04", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
+            ("16:04", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
             ("16:10", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("16:20", "STOP-b6c98c61-17e9-463b-ac80-e47e571f2ca1"),
             ("16:25", "STOP-9d8c3c99-a233-4359-9cf7-110c24ea276a"),
@@ -980,7 +974,7 @@ TRIPS = [
             ("08:25", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("08:31", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("08:33", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("08:35", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("08:35", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -1002,7 +996,7 @@ TRIPS = [
             ("09:05", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("09:11", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("09:13", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("09:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("09:15", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -1024,7 +1018,7 @@ TRIPS = [
             ("17:22", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("17:27", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("17:30", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("17:32", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("17:32", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -1046,7 +1040,7 @@ TRIPS = [
             ("18:05", "STOP-a16e5f32-c6c8-4f1d-b41e-2961e5d20b18"),
             ("18:11", "STOP-f493da2b-2c2c-47cd-a091-1e1421a01ed8"),
             ("18:13", "STOP-d15d9800-367d-4195-a211-322880120d20"),
-            ("18:15", "STOP-ffe704a6-8fae-4ef7-94fb-b7d3283ff485"),
+            ("18:15", "STOP-71fb5365-5e0a-4f14-9d08-14e17e9f49dd"),
         ],
     },
     {
@@ -1065,9 +1059,11 @@ TRIPS = [
             ("09:16", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
             ("09:37", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
             ("09:47", "STOP-3acd83d2-6783-4cfd-9e9b-b47abc21373e"),
-            ("09:51", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
+            ("09:50", "STOP-c062d2c9-ad18-4d95-9d11-6ade2584e25d"),
+            ("09:51", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
+            ("09:53", "STOP-48ef6ea8-1f58-46d6-a6c9-2f40608fd7b5"),
             ("09:58", "STOP-7cd6a5bf-7f43-4ce7-9347-23714294f9fb"),
-            ("10:02", "STOP-fb5a49fd-c4f9-4a12-88cc-c18b68e3028a"),
+            ("10:02", "STOP-d894d2df-62e3-4b4a-9ac1-808af6ab308b"),
             ("10:09", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
             ("10:25", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
             ("10:28", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
@@ -1085,17 +1081,19 @@ TRIPS = [
         "stop_times": [
             ("10:45", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
             ("10:49", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
-            ("10:50", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
-            ("10:52", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
-            ("11:13", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
-            ("11:23", "STOP-3acd83d2-6783-4cfd-9e9b-b47abc21373e"),
-            ("11:27", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
-            ("11:34", "STOP-7cd6a5bf-7f43-4ce7-9347-23714294f9fb"),
-            ("11:38", "STOP-fb5a49fd-c4f9-4a12-88cc-c18b68e3028a"),
-            ("11:45", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
-            ("12:01", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
-            ("12:04", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
-            ("12:07", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
+            ("10:52", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
+            ("10:56", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
+            ("11:17", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
+            ("11:27", "STOP-3acd83d2-6783-4cfd-9e9b-b47abc21373e"),
+            ("11:30", "STOP-c062d2c9-ad18-4d95-9d11-6ade2584e25d"),
+            ("11:31", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
+            ("11:33", "STOP-48ef6ea8-1f58-46d6-a6c9-2f40608fd7b5"),
+            ("11:38", "STOP-7cd6a5bf-7f43-4ce7-9347-23714294f9fb"),
+            ("11:42", "STOP-d894d2df-62e3-4b4a-9ac1-808af6ab308b"),
+            ("11:49", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
+            ("12:05", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
+            ("12:08", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
+            ("12:11", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
             ("12:21", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
         ],
     },
@@ -1107,22 +1105,24 @@ TRIPS = [
         "direction_id": DirectionId.OUTBOUND.value,
         "shape_id": "HUD_CHT_3",
         "stop_times": [
-            ("12:21", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
-            ("12:24", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
-            ("12:27", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
-            ("12:31", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
-            ("12:52", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
-            ("13:02", "STOP-3acd83d2-6783-4cfd-9e9b-b47abc21373e"),
-            ("13:06", "STOP-106aa5e7-e0b8-4297-b838-b3129679e848"),
-            ("13:13", "STOP-7cd6a5bf-7f43-4ce7-9347-23714294f9fb"),
-            ("13:17", "STOP-fb5a49fd-c4f9-4a12-88cc-c18b68e3028a"),
-            ("13:24", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
-            ("13:40", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
-            ("13:43", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
-            ("13:46", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
-            ("13:50", "STOP-40c220c3-6f14-4de6-9375-c6c883f11404"),
-            ("13:52", "STOP-906f1a1c-6245-490f-a3a0-de4c762bf5c2"),
-            ("13:56", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
+            ("12:25", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
+            ("12:28", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
+            ("12:31", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
+            ("12:35", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
+            ("12:56", "STOP-00c4dd04-b9c1-4c7d-8f42-72e96c1d1f6e"),
+            ("13:06", "STOP-3acd83d2-6783-4cfd-9e9b-b47abc21373e"),
+            ("13:09", "STOP-c062d2c9-ad18-4d95-9d11-6ade2584e25d"),
+            ("13:10", "STOP-0c5b445a-d205-4541-8ee0-e6d7a68fa15f"),
+            ("13:12", "STOP-48ef6ea8-1f58-46d6-a6c9-2f40608fd7b5"),
+            ("13:17", "STOP-7cd6a5bf-7f43-4ce7-9347-23714294f9fb"),
+            ("13:21", "STOP-d894d2df-62e3-4b4a-9ac1-808af6ab308b"),
+            ("13:28", "STOP-78e37cba-a18a-402a-b32f-32e639ef9dfc"),
+            ("13:44", "STOP-9ff11336-fac8-4f16-8a24-1ecddcc1f6a3"),
+            ("13:47", "STOP-56d8841a-2fb8-4fce-9a66-1c7bceb789d0"),
+            ("13:50", "STOP-65eb9629-4021-4885-95d4-3d0c1c078fe2"),
+            ("13:54", "STOP-40c220c3-6f14-4de6-9375-c6c883f11404"),
+            ("13:56", "STOP-906f1a1c-6245-490f-a3a0-de4c762bf5c2"),
+            ("14:00", "STOP-b1f73f1c-3825-4281-86cd-790b446811c8"),
         ],
     },
 ]
@@ -1140,19 +1140,7 @@ CALENDAR = [
         "friday": ServiceAvailable.YES.value,
         "saturday": ServiceAvailable.YES.value,
         "sunday": ServiceAvailable.YES.value,
-        "start_date": 20250102,
-        "end_date": 20291231,
-    },
-    {
-        "service_id": MONDAY_SERVICE_ID,
-        "monday": ServiceAvailable.YES.value,
-        "tuesday": ServiceAvailable.NO.value,
-        "wednesday": ServiceAvailable.NO.value,
-        "thursday": ServiceAvailable.NO.value,
-        "friday": ServiceAvailable.NO.value,
-        "saturday": ServiceAvailable.NO.value,
-        "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
     {
@@ -1164,7 +1152,7 @@ CALENDAR = [
         "friday": ServiceAvailable.NO.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
     {
@@ -1176,7 +1164,31 @@ CALENDAR = [
         "friday": ServiceAvailable.YES.value,
         "saturday": ServiceAvailable.NO.value,
         "sunday": ServiceAvailable.NO.value,
-        "start_date": 20250102,
+        "start_date": 20260102,
+        "end_date": 20291231,
+    },
+    {
+        "service_id": SATURDAY_SERVICE_ID,
+        "monday": ServiceAvailable.NO.value,
+        "tuesday": ServiceAvailable.NO.value,
+        "wednesday": ServiceAvailable.NO.value,
+        "thursday": ServiceAvailable.NO.value,
+        "friday": ServiceAvailable.NO.value,
+        "saturday": ServiceAvailable.YES.value,
+        "sunday": ServiceAvailable.NO.value,
+        "start_date": 20260102,
+        "end_date": 20291231,
+    },
+    {
+        "service_id": SUNDAY_SERVICE_ID,
+        "monday": ServiceAvailable.NO.value,
+        "tuesday": ServiceAvailable.NO.value,
+        "wednesday": ServiceAvailable.NO.value,
+        "thursday": ServiceAvailable.NO.value,
+        "friday": ServiceAvailable.NO.value,
+        "saturday": ServiceAvailable.NO.value,
+        "sunday": ServiceAvailable.YES.value,
+        "start_date": 20260102,
         "end_date": 20291231,
     },
 ]
@@ -1187,7 +1199,7 @@ CALENDAR = [
 # =============================================================================
 
 # Generate service exceptions for US federal holidays and Easter
-years = range(2025, 2030)  # Years covered by this GTFS feed
+years = range(2026, 2030)  # Years covered by this GTFS feed
 CALENDAR_DATES = [
     {
         "service_id": service_id,  # Apply exception to this service pattern
@@ -1199,7 +1211,6 @@ CALENDAR_DATES = [
     # Apply holiday exceptions to all service patterns
     for service_id in [
         DAILY_SERVICE_ID,
-        MONDAY_SERVICE_ID,
         TUES_FRI_SERVICE_ID,
         WEEKDAY_SERVICE_ID,
         SATURDAY_SERVICE_ID,

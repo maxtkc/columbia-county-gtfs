@@ -94,12 +94,47 @@ def load_guides_from_csv():
             shape_id = row["shape_id"]
             if shape_id not in guides_dict:
                 guides_dict[shape_id] = []
-            guides_dict[shape_id].append((row["stop_lon"], row["stop_lat"], int(row["position"])))
+            # Include order if available, otherwise default to 0
+            order = int(row["order"]) if "order" in row and pd.notna(row["order"]) else 0
+            guides_dict[shape_id].append((row["stop_lon"], row["stop_lat"], int(row["position"]), order))
+        
+        # Sort guides by order to ensure they're processed in waypoint sequence
+        for shape_id in guides_dict:
+            guides_dict[shape_id].sort(key=lambda x: x[3])  # Sort by order (4th element)
         
         return guides_dict
         
     except Exception as e:
         print(f"⚠️ Warning: Could not load guides.csv: {e}")
+        return {}
+
+
+def load_straights_from_csv(straights_csv_path=None):
+    """
+    Load straight line segment indices from straights.csv file.
+    
+    Returns:
+        Dict mapping shape_id to list of integers (waypoint indices)
+    """
+    if straights_csv_path is None:
+        straights_csv_path = Path(script_dir) / "straights.csv"
+    
+    if not straights_csv_path.exists():
+        return {}
+    
+    try:
+        df = pd.read_csv(straights_csv_path)
+        straights_dict = {}
+        
+        # Group by shape_id and collect indices
+        for shape_id, group in df.groupby('shape_id'):
+            indices = group['index'].tolist()
+            straights_dict[shape_id] = indices
+        
+        return straights_dict
+        
+    except Exception as e:
+        print(f"Warning: Could not load straights from {straights_csv_path}: {e}")
         return {}
 
 
@@ -118,7 +153,8 @@ def generate_brouter_urls_cli():
     """
     nogos_dict = load_nogos_from_csv()
     guides_dict = load_guides_from_csv()
-    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict, guides_dict):
+    straights_dict = load_straights_from_csv()
+    for route_id, url in generate_brouter_urls(TRIPS, STOPS, nogos_dict, guides_dict, straights_dict):
         print(f"{route_id}: {url}")
 
 
@@ -245,9 +281,10 @@ def update_stop_positions(brouter_url, trip_id):
     stops_csv_path = Path(script_dir) / "stops.csv"
     nogos_csv_path = Path(script_dir) / "nogos.csv"
     guides_csv_path = Path(script_dir) / "guides.csv"
+    straights_csv_path = Path(script_dir) / "straights.csv"
     nogos_dict = load_nogos_from_csv()
     guides_dict = load_guides_from_csv()
-    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, guides_csv_path, nogos_dict, guides_dict)
+    result = update_stop_positions_from_url(brouter_url, trip_id, TRIPS, stops_csv_path, nogos_csv_path, guides_csv_path, straights_csv_path, nogos_dict, guides_dict)
     
     if "error" in result:
         print(f"❌ Error: {result['error']}")
@@ -320,6 +357,22 @@ def update_stop_positions(brouter_url, trip_id):
         print(f"⚠️  Guides warning: {guides_info['guides_error']}")
     elif 'guides_info' in result:
         print("ℹ️  No guide points found in BRouter URL")
+    
+    # Handle straight line segments information
+    straights_info = result.get('straights_info', {})
+    if straights_info.get('straights_csv_created'):
+        print(f"📄 Created {straights_csv_path}")
+    
+    if straights_info.get('straights_updated'):
+        shape_id = straights_info['shape_id']
+        indices = straights_info['indices']
+        indices_str = ','.join(map(str, indices))
+        print(f"📏 Updated straight line segments for shape '{shape_id}': [{indices_str}]")
+        print(f"✅ Updated {straights_csv_path}")
+    elif straights_info.get('straights_error'):
+        print(f"⚠️  Straights warning: {straights_info['straights_error']}")
+    elif 'straights_info' in result:
+        print("ℹ️  No straight line segments found in BRouter URL")
 
 
 
